@@ -1,0 +1,22 @@
+# Ignorar entornos virtuales de Python
+.venv/
+venv/
+env/
+
+# Ignorar carpetas de caché y temporales de Python
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Ignorar carpetas de distribución y construcción de paquetes
+build/
+dist/
+*.egg-info/
+sdist/
+*.spec
+
+# Archivos de configuración de IDE y S.O.
+.vscode/
+.idea/
+.DS_Store
+*.log
