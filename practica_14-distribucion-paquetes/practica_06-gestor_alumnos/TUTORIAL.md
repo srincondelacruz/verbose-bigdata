@@ -14,7 +14,12 @@ El paquete debe tener:
 
 (En nuestro repositorio, esta es la carpeta `practica_06-gestor_alumnos`).
 
-gestor_alumnos/ ├── notas/ │ ├── init.py │ ├── promedio.py │ └── ranking.py └── setup.py
+gestor_alumnos/ 
+├── notas/ │ 
+├── init.py 
+│ ├── promedio.py 
+│ └── ranking.py 
+└── setup.py
 
 
 
