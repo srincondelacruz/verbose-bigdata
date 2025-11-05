@@ -14,3 +14,6 @@ Repositorio con todas las prácticas de la asignatura Big Data del curso 2024/20
 
 * **[Práctica 03: Paquete Simple (Módulo Único)](./practica_03-operaciones_basicas/)**
     * *Objetivo: Aprender a empaquetar un módulo simple con `py_modules` y probarlo.*
+
+* **[Práctica 04: Paquete con Subpaquetes (Utilidades de Texto)](./practica_04-utilidades_texto/)**
+    * *Objetivo: Dominar el empaquetado de subpaquetes (`texto.conteo`, `texto.formato`).*
