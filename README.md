@@ -17,3 +17,6 @@ Repositorio con todas las prácticas de la asignatura Big Data del curso 2024/20
 
 * **[Práctica 04: Paquete con Subpaquetes (Utilidades de Texto)](./practica_04-utilidades_texto/)**
     * *Objetivo: Dominar el empaquetado de subpaquetes (`texto.conteo`, `texto.formato`).*
+
+* **[Práctica 05: Paquete de Análisis de Datos (Procesador Datos)](./practica_05-procesador_datos/)**
+    * *Objetivo: Crear un paquete con módulos de limpieza y estadística básica.*
