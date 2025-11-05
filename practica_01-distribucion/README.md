@@ -7,9 +7,9 @@ Este directorio contiene la primera práctica del módulo de Big Data, enfocada 
 ## 📜 Contenido del Paquete
 
 * **`paquete/`**: El paquete fuente, que contiene:
-    * `hola/`: Un sub-paquete con la función `saludar()`.
+    * `hola/`: Un sub-paquete con la función `saludar()` (y `prueba()` a partir de la v0.2).
     * `adios/`: Un sub-paquete con la función `despedir()`.
-* **`setup.py`**: El script de configuración que le dice a `setuptools` cómo construir el paquete.
+* **`setup.py`**: El script de configuración que le dice a `setuptools` cómo construir el paquete (actualmente en v0.2).
 * **`requirements.txt`**: Las dependencias necesarias para *desarrollar* y *distribuir* este paquete (ej. `twine`, `wheel`).
 
 ## 🚀 Cómo usar este proyecto
@@ -51,12 +51,12 @@ python setup.py sdist bdist_wheel
 # 2. Desinstalar la versión editable (si la tenías)
 pip uninstall paquete -y
 
-# 3. Instalar la versión "real" desde el archivo generado
-pip install dist\paquete-0.1.tar.gz
+# 3. Instalar la versión "real" desde el archivo generado (ej. v0.2)
+pip install dist\paquete-0.2.tar.gz --upgrade
 
-# 4. Probarlo
-# >>> from paquete.adios.despedidas import despedir
-# >>> despedir()
+# 4. Probarlo (ej. la nueva función de la v0.2)
+# >>> from paquete.hola.saludos import prueba
+# >>> prueba()
 4. (Opcional) Publicar en TestPyPI
 Para publicar nuevas versiones en el índice de paquetes de prueba de PyPI.
 
@@ -64,3 +64,5 @@ PowerShell
 
 # Subir los paquetes de la carpeta /dist
 python -m twine upload --repository testpypi dist/*
+
+---
