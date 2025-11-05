@@ -20,3 +20,6 @@ Repositorio con todas las prácticas de la asignatura Big Data del curso 2024/20
 
 * **[Práctica 05: Paquete de Análisis de Datos (Procesador Datos)](./practica_05-procesador_datos/)**
     * *Objetivo: Crear un paquete con módulos de limpieza y estadística básica.*
+  
+* **[Práctica 06: Paquete de Gestión de Alumnos](./practica_06-gestor_alumnos/)**
+    * *Objetivo: Crear módulos de negocio complejos (`promedio`, `ranking`) dentro de subpaquetes.*
