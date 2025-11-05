@@ -12,7 +12,12 @@ Este documento detalla los pasos para crear el paquete `procesador_datos`.
 
 La estructura debe ser:
 
-procesador_datos/ ├── analisis/ │ ├── init.py │ ├── limpieza.py │ └── estadisticas.py └── setup.py
+procesador_datos/ 
+├── analisis/ 
+│ ├── init.py 
+│ ├── limpieza.py 
+│ └── estadisticas.py 
+└── setup.py
 
 
 
