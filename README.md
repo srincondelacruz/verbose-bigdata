@@ -1,25 +1,10 @@
-# Prácticas del Módulo Big Data
+# Prácticas del Módulo Big Data (Curso 2025)
 
-Repositorio con todas las prácticas de la asignatura Big Data del curso 2024/2025.
+Repositorio con todas las prácticas de la asignatura.
 
 ---
 
 ## 📂 Índice de Prácticas
 
-* **[Práctica 01: Creación y Distribución de Paquetes](./practica_01-distribucion/)**
-    * *Objetivo: Aprender a estructurar, empaquetar y distribuir un paquete de Python usando `setuptools`.*
-
-* **[Práctica 02: Jupyter y Comandos PIP](./practica_02-pip_jupyter/)**
-    * *Objetivo: Familiarizarse con los comandos de `pip` y `pandas` en un entorno de notebook.*
-
-* **[Práctica 03: Paquete Simple (Módulo Único)](./practica_03-operaciones_basicas/)**
-    * *Objetivo: Aprender a empaquetar un módulo simple con `py_modules` y probarlo.*
-
-* **[Práctica 04: Paquete con Subpaquetes (Utilidades de Texto)](./practica_04-utilidades_texto/)**
-    * *Objetivo: Dominar el empaquetado de subpaquetes (`texto.conteo`, `texto.formato`).*
-
-* **[Práctica 05: Paquete de Análisis de Datos (Procesador Datos)](./practica_05-procesador_datos/)**
-    * *Objetivo: Crear un paquete con módulos de limpieza y estadística básica.*
-  
-* **[Práctica 06: Paquete de Gestión de Alumnos](./practica_06-gestor_alumnos/)**
-    * *Objetivo: Crear módulos de negocio complejos (`promedio`, `ranking`) dentro de subpaquetes.*
+* **[Práctica 14: Distribución y casos prácticos de paquetes externos](./practica_14-distribucion-paquetes/)**
+    * *Objetivo: Aprender a estructurar, empaquetar y distribuir paquetes de Python con `setuptools`, incluyendo 6 casos prácticos.*
