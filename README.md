@@ -11,3 +11,6 @@ Repositorio con todas las prácticas de la asignatura Big Data del curso 2024/20
 
 * **[Práctica 02: Jupyter y Comandos PIP](./practica_02-pip_jupyter/)**
     * *Objetivo: Familiarizarse con los comandos de `pip` y `pandas` en un entorno de notebook.*
+
+* **[Práctica 03: Paquete Simple (Módulo Único)](./practica_03-operaciones_basicas/)**
+    * *Objetivo: Aprender a empaquetar un módulo simple con `py_modules` y probarlo.*
