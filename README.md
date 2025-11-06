@@ -3,7 +3,6 @@
 Repositorio con todas las prácticas de la asignatura.
 
 ---
-
 ## 📂 Índice de Prácticas
 
 * **[Práctica 15: Comprehensions y Lambda](./practica_15-Comprehensions/)**
@@ -14,3 +13,9 @@ Repositorio con todas las prácticas de la asignatura.
         * *Objetivo: Aprender a estructurar, empaquetar y distribuir 6 paquetes de Python con `setuptools`.*
     * **[Parte 2: Casos Data Science (Numpy/Pandas/ML)](./practica_14-casos_data_science/)**
         * *Objetivo: Ejecutar notebooks de análisis de datos con Numpy, Pandas y ML.*
+
+* **[Práctica 13: Programación Modular](./practica_13-programacion-modular/)**
+    * *Objetivo: Estructurar un proyecto Python en paquetes y módulos (ej. la carpeta `app/`).*
+
+* **[Práctica 12: Tipos de Argumentos](./practica_12-tipos_de_argumentos/)**
+    * *Objetivo: Repasar `*args`, `**kwargs` y argumentos posicionales/nombrados en notebooks.*
