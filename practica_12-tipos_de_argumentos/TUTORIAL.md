@@ -1,14 +1,3 @@
-¡Claro que sí! Esta es la "Práctica 12" (tipos_de_argumentos).
-
-Aquí tienes el guion completo de los 15 ejercicios, formateado en Markdown para que lo guardes en tu repositorio.
-
-1. 📍 Ubicación
-El archivo se debe llamar TUTORIAL.md y debe ir dentro de la carpeta que ya tienes creada: practica_12-tipos_de_argumentos/
-
-2. 📝 Contenido para TUTORIAL.md
-Copia y pega todo esto en ese archivo:
-
-Markdown
 
 # Práctica 12: Tipos de Argumentos y Alcance (Scope)
 
