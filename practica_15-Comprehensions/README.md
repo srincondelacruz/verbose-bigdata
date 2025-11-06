@@ -8,7 +8,6 @@ Este directorio contiene los ejercicios de la Práctica 15, divididos en dos par
 ## 🗂️ Índice de Archivos
 
 * **[TUTORIAL.md](./TUTORIAL.md)**: El guion completo de la práctica con todas las explicaciones teóricas.
-* **[EJERCICIOS.md](./EJERCICIOS.md)**: El guion de los ejercicios (sin la teoría).
 * **[practica_15.py](./practica_15.py)**: Soluciones a la Parte 1 (Comprehensions).
 * **[lambda_bonus.py](./lambda_bonus.py)**: Soluciones a la Parte 2 (Lambda).
 
