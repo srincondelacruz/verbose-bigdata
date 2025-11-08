@@ -19,3 +19,8 @@ Repositorio con todas las prácticas de la asignatura.
 
 * **[Práctica 12: Tipos de Argumentos](./practica_12-tipos_de_argumentos/)**
     * *Objetivo: Repasar `*args`, `**kwargs` y argumentos posicionales/nombrados en notebooks.*
+
+## 📂 Índice de Proyectos Personales
+
+* **[Ejercicios Personales: LeetCode (DS&A)](./ejercicios_personales-leetcode/)**
+    * *Objetivo: Colección de desafíos de programación para dominar Estructuras de Datos y Algoritmos.*
