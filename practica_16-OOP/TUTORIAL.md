@@ -1,4 +1,6 @@
-# Parte 2 - Nivel Intermedio
+# Práctica 16 (Parte 2): OOP - Nivel Intermedio
+
+Ejercicios avanzados de Programación Orientada a Objetos para simular sistemas de gestión complejos, utilizando variables de clase, métodos de clase y lógica de negocio.
 
 ---
 
@@ -11,24 +13,20 @@ Crea una clase `EmpleadoEmpresa` con las siguientes características:
     * `salario_minimo = 1000`
     * `empresa = "TechCorp"`
 * **Atributos de instancia:**
-    * `nombre`
-    * `edad`
-    * `salario`
-    * `departamento`
-    * `años_experiencia`
+    * `nombre`, `edad`, `salario`, `departamento`, `años_experiencia`
 * **Métodos:**
     * `__init__()`: Inicializa atributos. Valida que `salario` sea `>=` a `salario_minimo`, si no, asigna `salario_minimo`. Incrementa `total_empleados`.
     * `aumentar_salario(porcentaje)`: Aumenta el salario.
     * `cambiar_departamento(nuevo_depto)`: Cambia el departamento.
     * `cumplir_años()`: Incrementa `edad` y `años_experiencia`.
-    * `calcular_salario_anual()`: Retorna salario * 12.
+    * `calcular_salario_anual()`: Retorna `salario * 12`.
     * `es_senior()`: Retorna `True` si tiene más de 5 años de experiencia.
     * `get_info_completa()`: Retorna un string con toda la información del empleado.
 * **Métodos de clase:**
     * `@classmethod empleados_registrados()`: Retorna `total_empleados`.
     * `@classmethod actualizar_salario_minimo(nuevo_minimo)`: Actualiza `salario_minimo`.
 
-**Prueba:** Crea 5 empleados, realiza operaciones y muestra un resumen.
+**Prueba:** Crea 5 empleados, realiza operaciones (aumentos, cambios de depto) y muestra un resumen.
 
 ---
 
@@ -41,16 +39,13 @@ Crea una clase `Articulo` con:
     * `iva = 0.21`
 * **Atributos de instancia:**
     * `codigo` (generado automáticamente: "ART001", "ART002", etc.)
-    * `nombre`
-    * `precio`
-    * `stock`
-    * `categoria`
+    * `nombre`, `precio`, `stock`, `categoria`
 * **Métodos:**
     * `__init__(nombre, precio, stock_inicial, categoria)`: Inicializa y genera `codigo` automático.
     * `vender(cantidad)`: Reduce `stock` si hay suficiente (retorna `True`/`False`).
     * `reabastecer(cantidad)`: Aumenta `stock`.
-    * `calcular_valor_inventario()`: Retorna `precio` × `stock`.
-    * `calcular_precio_con_iva()`: Retorna `precio` + IVA.
+    * `calcular_valor_inventario()`: Retorna `precio * stock`.
+    * `calcular_precio_con_iva()`: Retorna `precio * (1 + iva)`.
     * `aplicar_descuento(porcentaje)`: Reduce el `precio`.
     * `necesita_reabastecimiento()`: Retorna `True` si `stock < 5`.
     * `obtener_info()`: Retorna string con toda la información.
@@ -72,10 +67,9 @@ Crea una clase `Curso` con:
 * **Atributos de instancia:**
     * `nombre_curso`, `codigo_curso`, `creditos`
     * `estudiantes_inscritos` (lista vacía)
-    * `capacidad_maxima`
-    * `profesor`
+    * `capacidad_maxima`, `profesor`
 * **Métodos:**
-    * `__init__()`: Inicializa atributos.
+    * `__init__()`: Inicializa atributos e incrementa `total_cursos`.
     * `inscribir_estudiante(nombre_estudiante)`: Agrega estudiante si hay cupo (retorna mensaje).
     * `retirar_estudiante(nombre_estudiante)`: Elimina estudiante.
     * `obtener_cantidad_inscritos()`
@@ -105,7 +99,7 @@ Crea una clase `CuentaBancaria` con:
     * `titular`, `saldo`
     * `transacciones` (lista de diccionarios: `{tipo, monto, saldo_resultante}`)
 * **Métodos:**
-    * `__init__(titular, saldo_inicial)`: Inicializa y registra el depósito inicial.
+    * `__init__(titular, saldo_inicial)`: Inicializa, genera `numero_cuenta` y registra el depósito inicial.
     * `depositar(monto)`: Aumenta saldo y registra.
     * `retirar(monto)`: Reduce saldo (si hay), aplica comisión y registra (retorna `True`/`False`).
     * `transferir(cuenta_destino, monto)`
@@ -134,7 +128,7 @@ Crea una clase `Proyecto` con:
     * `estado` (inicialmente "Planificación")
     * `miembros_equipo` (lista de nombres)
 * **Métodos:**
-    * `__init__()`: Inicializa atributos.
+    * `__init__()`: Inicializa atributos e incrementa `total_proyectos`.
     * `registrar_gasto(concepto, monto)`: Agrega gasto si hay presupuesto (retorna `True`/`False`).
     * `calcular_presupuesto_restante()`
     * `calcular_gastos_totales()`
@@ -162,14 +156,13 @@ Crea una clase `Libro` con:
     * `total_libros = 0`
     * `libros_prestados_actualmente = 0`
 * **Atributos de instancia:**
-    * `titulo`, `autor`, `isbn`
-    * `disponible` (booleano)
+    * `titulo`, `autor`, `isbn`, `disponible` (bool)
     * `usuario_actual` (`None` o nombre)
     * `veces_prestado` (contador)
     * `prestamos_historico` (lista de diccionarios: `{usuario, fecha_prestamo, fecha_devolucion}`)
 * **Métodos:**
-    * `__init__()`: Inicializa.
-    * `prestar(nombre_usuario)`: Presta si está disponible, actualiza contadores (retorna `True`/`False`).
+    * `__init__()`: Inicializa e incrementa `total_libros`.
+    * `prestar(nombre_usuario)`: Presta si está disponible (retorna `True`/`False`).
     * `devolver()`: Devuelve, actualiza contadores e historial (retorna `True`/`False`).
     * `esta_disponible()`
     * `obtener_info_prestamo()`
@@ -193,12 +186,11 @@ Crea una clase `Estudiante` con:
     * `calificacion_minima_aprobatoria = 6.0`
     * `total_estudiantes = 0`
 * **Atributos de instancia:**
-    * `nombre`
+    * `nombre`, `semestre`
     * `matricula` (generada automáticamente: "2024001", "2024002", etc.)
     * `calificaciones` (diccionario: `{materia: [lista de notas]}`)
-    * `semestre`
 * **Métodos:**
-    * `__init__(nombre, semestre)`
+    * `__init__(nombre, semestre)`: Genera matrícula e incrementa `total_estudiantes`.
     * `agregar_materia(nombre_materia)`
     * `registrar_calificacion(materia, calificacion)`: (0-10)
     * `calcular_promedio_materia(materia)`
@@ -230,9 +222,9 @@ Crea una clase `Habitacion` con:
     * `servicios_extras` (lista de diccionarios: `{servicio: str, precio: float}`)
     * `reservas_totales` (contador)
 * **Métodos:**
-    * `__init__(numero, tipo)`: Asigna precio según `precios_base`.
-    * `reservar(nombre_huesped)`
-    * `liberar()`
+    * `__init__(numero, tipo)`: Asigna precio según `precios_base` e incrementa `total_habitaciones`.
+    * `reservar(nombre_huesped)`: Marca como ocupada y actualiza contador.
+    * `liberar()`: Desocupa y limpia datos.
     * `agregar_servicio_extra(servicio, precio)`
     * `calcular_costo_servicios()`
     * `calcular_costo_total(num_noches)`: Retorna `(precio_noche * noches) + servicios_extras`.
@@ -253,7 +245,7 @@ Crea una clase `Pedido` con:
 
 * **Variables de clase:**
     * `contador_pedidos = 0`
-    * `total_pedidos = 0`
+    * `total_pedidos = 0` (obsoleto, usar contador)
     * `pedidos_activos = 0`
     * `propina_sugerida = 0.10`
 * **Atributos de instancia:**
@@ -263,13 +255,13 @@ Crea una clase `Pedido` con:
     * `estado` ("Pendiente", "En Preparación", "Listo", "Entregado")
     * `propina` (inicialmente 0)
 * **Métodos:**
-    * `__init__(cliente, mesa)`: Estado "Pendiente".
+    * `__init__(cliente, mesa)`: Estado "Pendiente", genera `numero_pedido`.
     * `agregar_item(platillo, cantidad, precio_unitario)`
     * `eliminar_item(platillo)`
     * `calcular_subtotal()`
     * `agregar_propina(porcentaje)`
     * `calcular_total()`: Retorna `subtotal + propina`.
-    * `cambiar_estado(nuevo_estado)`
+    * `cambiar_estado(nuevo_estado)`: Actualiza contadores `pedidos_activos`.
     * `obtener_cantidad_items()`
     * `obtener_item_mas_caro()`
     * `generar_ticket()`: Muestra ticket formateado.
@@ -296,10 +288,10 @@ Crea una clase `Evento` con:
     * `ingresos_totales`
     * `tipo_evento` ("Concierto", "Conferencia", etc.)
 * **Métodos:**
-    * `__init__()`: Inicializa.
+    * `__init__()`: Inicializa e incrementa `total_eventos`.
     * `registrar_asistente(nombre, email, es_estudiante=False)`
-    * `registrar_grupo(lista_asistentes, cantidad)`
-    * `confirmar_pago(email)`: Marca `pago_realizado=True` y suma a `ingresos` (aplica descuento si es estudiante).
+    * `registrar_grupo(lista_asistentes)`: (*Corrección: debe recibir una lista de asistentes, no `cantidad`*).
+    * `confirmar_pago(email)`: Marca `pago_realizado=True` y suma a `ingresos` (aplica descuento).
     * `calcular_asistentes_confirmados()`
     * `calcular_asistentes_pendientes()`
     * `obtener_cupos_disponibles()`
