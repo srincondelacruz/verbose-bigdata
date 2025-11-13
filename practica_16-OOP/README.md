@@ -1,6 +1,6 @@
 # Práctica 16: Programación Orientada a Objetos (OOP)
 
-Este directorio contiene los ejercicios prácticos sobre Programación Orientada a Objetos en Python. La práctica está dividida en dos niveles de dificultad.
+Este directorio contiene los ejercicios prácticos sobre Programación Orientada a Objetos en Python. La práctica está dividida en dos partes.
 
 ## 🎯 Objetivo
 
@@ -12,7 +12,7 @@ Dominar los pilares de la OOP: clases, objetos, atributos (de instancia y de cla
 
 * **[TUTORIAL.md](./TUTORIAL.md)**: El guion completo con todos los enunciados (Nivel Principiante y Nivel Intermedio/Encapsulación).
 
-* **[Nivel_Intermedio.py](./Nivel_Intermedio.py)**: Soluciones a la **Parte 1 (Nivel Principiante)**. (Ej: Clases `Libro`, `Estudiante`, `Coche`, etc.).
+* **[Nivel_Intermedio.py](./Nivel_Intermedio.py)**: Soluciones a la **Parte 1 (Nivel Intermedio)**. (Ej: Clases `Libro`, `Estudiante`, `Coche`, etc.).
 
 * **[Nivel_Intermedio_2.py](./Nivel_Intermedio_2.py)**: Soluciones a la **Parte 2 (Nivel Intermedio/Encapsulación)**. (Ej: `EmpleadoEmpresa`, `Inventario`, `CuentaBancaria`, etc.).
 
@@ -20,8 +20,8 @@ Dominar los pilares de la OOP: clases, objetos, atributos (de instancia y de cla
 
 ## 🧠 Enfoque y Lógica
 
-La práctica se divide en dos archivos de soluciones que reflejan los niveles de dificultad del tutorial:
+La práctica se divide en dos archivos de soluciones que reflejan los ejercicios propuestos del tutorial:
 
-* **Parte 1 (Nivel Principiante):** Soluciones en `Nivel_Intermedio.py`. Se centra en la creación de clases simples, la definición de atributos en el `__init__` y la implementación de métodos de instancia y métodos de clase (`@classmethod`).
+* **Parte 1 (Nivel Intermedio):** Soluciones en `Nivel_Intermedio.py`. Se centra en la creación de clases, la definición de atributos en el `__init__` y la implementación de métodos de instancia y métodos de clase (`@classmethod`).
 
-* **Parte 2 (Nivel Intermedio):** Soluciones en `Nivel_Intermedio_2.py`. Avanza hacia conceptos más complejos como la **encapsulación** (atributos privados `__`), la creación de *getters/setters* con validación, y la **interacción entre múltiples clases** (ej. `Hotel` gestionando `Habitacion`).
+* **Parte 2 (Nivel Intermedio_2):** Soluciones en `Nivel_Intermedio_2.py`. Avanza hacia conceptos más complejos como la **encapsulación** (atributos privados `__`), la creación de *getters/setters* con validación, y la **interacción entre múltiples clases** (ej. `Hotel` gestionando `Habitacion`).
