@@ -1,4 +1,4 @@
-# Práctica 16 (Parte 1): OOP - Clases y objetos (Nivel Intermedio)
+# Práctica 16 (Parte 1): OOP - Clases y objetos - Nivel Intermedio
 
 Ejercicios avanzados de Programación Orientada a Objetos para simular sistemas de gestión complejos, utilizando variables de clase, métodos de clase y lógica de negocio.
 
@@ -308,7 +308,7 @@ Crea una clase `Evento` con:
 
 **Prueba:** Crea 4 eventos, registra asistentes (individuales y grupos), confirma/cancela pagos, llena un evento y genera reportes.
 
-# Parte 2 - Métodos y Encapsulación (Nivel Intermedio)
+# Práctica 16 (Parte 2): OOP - Métodos y Encapsulación - Nivel Intermedio
 
 Ejercicios avanzados de OOP enfocados en la encapsulación (atributos privados `__`), métodos *getter/setter*, validaciones y la interacción entre múltiples clases.
 
