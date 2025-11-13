@@ -11,7 +11,7 @@ Repositorio con todas las prácticas de la asignatura.
 * **[Práctica 15: Comprehensions y Lambda](./practica_15-Comprehensions/)**
     * *Objetivo: Dominar list/set/dict comprehensions y el uso de `lambda` para ordenamiento.*
 
-* **Práctica 14: Distribución y Casos Prácticos**
+* **[Práctica 14: Distribución y Casos Prácticos](./practica_14-distribucion-paquetes/)**
     * **[Parte 1: Creación de Paquetes](./practica_14-distribucion-paquetes/)**
         * *Objetivo: Aprender a estructurar, empaquetar y distribuir 6 paquetes de Python con `setuptools`.*
     * **[Parte 2: Casos Data Science (Numpy/Pandas/ML)](./practica_14-casos_data_science/)**
