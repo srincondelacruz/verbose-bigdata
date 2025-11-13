@@ -5,6 +5,9 @@ Repositorio con todas las prácticas de la asignatura.
 ---
 ## 📂 Índice de Prácticas
 
+* **[Práctica 16: Programación Orientada a Objetos (OOP)](./practica_16-OOP/)**
+    * *Objetivo: Dominar Clases, Objetos, `__init__`, `@classmethod` y atributos.*
+
 * **[Práctica 15: Comprehensions y Lambda](./practica_15-Comprehensions/)**
     * *Objetivo: Dominar list/set/dict comprehensions y el uso de `lambda` para ordenamiento.*
 
