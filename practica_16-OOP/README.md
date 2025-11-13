@@ -10,7 +10,7 @@ Dominar los pilares de la OOP: clases, objetos, atributos (de instancia y de cla
 
 ## 🗂️ Índice de Archivos
 
-* **[TUTORIAL.md](./TUTORIAL.md)**: El guion completo con todos los enunciados (Nivel Principiante y Nivel Intermedio/Encapsulación).
+* **[TUTORIAL.md](./TUTORIAL.md)**: El guion completo con todos los enunciados (Nivel Intermedio/OOP y Nivel Intermedio/Encapsulación).
 
 * **[Nivel_Intermedio.py](./Nivel_Intermedio.py)**: Soluciones a la **Parte 1 (Nivel Intermedio)**. (Ej: Clases `Libro`, `Estudiante`, `Coche`, etc.).
 
