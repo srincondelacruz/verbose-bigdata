@@ -1,4 +1,4 @@
-# Práctica 16 (Parte 2): OOP - Nivel Intermedio
+# Práctica 16 (Parte 1): OOP - Nivel Intermedio
 
 Ejercicios avanzados de Programación Orientada a Objetos para simular sistemas de gestión complejos, utilizando variables de clase, métodos de clase y lógica de negocio.
 
