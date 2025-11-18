@@ -5,6 +5,9 @@ Repositorio con todas las prácticas de la asignatura.
 ---
 ## 📂 Índice de Prácticas
 
+* **[Práctica 18: Data Cleaning y Manipulación con Pandas](./practica_18-data-cleaning-pandas/)**
+    * *Objetivo: Realizar limpieza de datos (Data Cleaning) y Análisis Exploratorio (EDA) usando Pandas: manejo de duplicados, valores nulos, conversión de tipos y filtrado.*
+
 * **[Práctica 17: Herencia y Tipos de Métodos (OOP Avanzado)](./practica_17-Herencia/)**
     * *Objetivo: Profundizar en OOP mediante Herencia, Polimorfismo (`super()`) y tipos de métodos (`@staticmethod`, `@classmethod`).*
 
