@@ -29,10 +29,12 @@ Dominar la librería Pandas para transformar datasets "sucios" en datos listos p
 ### 🔍 Avanzado
 * **[11. Indexación Avanzada](./11-Advanced_Indexing/Advanced-Index.ipynb)**: Multi-índices (Hierarchical Indexing) y operaciones avanzadas.
 * **[12. Manejo de Outliers](./12-Handling_Outliers/Untitled-1.ipynb)**: Detección y tratamiento de valores atípicos estadísticos.
+* **[13. Food_choices](./13-Food_choices/FoodChoice.ipynb)**: Dataset de hábitos alimenticios para análisis EDA.
 
 ---
 
-## 🛠️ Herramientas
-
 * **Librerías:** `pandas`, `numpy`, `matplotlib` (para visualización básica).
-* **Dataset:** `Customers.csv` / `survey_results_public.csv`.
+* **Datasets:**
+    * `Customers.csv`: Datos de clientes para limpieza básica.
+    * `survey_results_public.csv`: Encuesta de StackOverflow para limpieza avanzada.
+    * `food_coded.csv`: Dataset de hábitos alimenticios para análisis EDA.
