@@ -5,6 +5,9 @@ Repositorio con todas las prácticas de la asignatura.
 ---
 ## 📂 Índice de Prácticas
 
+* **[Práctica 19: Análisis de KPIs con Pandas](./practica_19-kpis-pandas/)**
+    * *Objetivo: Calcular métricas de negocio clave (KPIs) como Tasa de Conversión, ARPU, CAC, ROI y Retención utilizando Pandas.*
+
 * **[Práctica 18: Data Cleaning y Manipulación con Pandas](./practica_18-data-cleaning-pandas/)**
     * *Objetivo: Realizar limpieza de datos (Data Cleaning) y Análisis Exploratorio (EDA) usando Pandas: manejo de duplicados, valores nulos, conversión de tipos y filtrado.*
 
