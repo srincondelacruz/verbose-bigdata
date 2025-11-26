@@ -5,6 +5,9 @@ Repositorio con todas las prácticas de la asignatura.
 ---
 ## 📂 Índice de Prácticas
 
+* **[Práctica 20: Feature Engineering](./practica_20-Feature-Engineering/)**
+    * *Objetivo: central fue dominar el Feature Engineering (Ingeniería de Características) en Pandas a través de la metodología split-apply-combine para crear valor predictivo y de negocio en el set de datos.*
+
 * **[Práctica 19: Análisis de KPIs con Pandas](./practica_19-kpis-pandas/)**
     * *Objetivo: Calcular métricas de negocio clave (KPIs) como Tasa de Conversión, ARPU, CAC, ROI y Retención utilizando Pandas.*
 
