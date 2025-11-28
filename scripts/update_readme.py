@@ -121,10 +121,9 @@ METHODS_TO_FORMAT = [
     r'\bshow\(\)',
     r'\bprintSchema\(\)',
     # Python OOP
-    r'\b__init__\(\)',
     r'\b__init__\b',
-    r'\b__str__\(\)',
-    r'\b__repr__\(\)',
+    r'\b__str__\b',
+    r'\b__repr__\b',
     r'\bsuper\(\)',
     r'@classmethod\b',
     r'@staticmethod\b',
@@ -165,13 +164,6 @@ def format_methods_with_backticks(text: str) -> str:
     result = re.sub(r'(?<!`)\*args(?!`)', r'`*args`', result)
     
     for pattern in METHODS_TO_FORMAT:
-        # Crear un regex que evite backticks existentes
-        def make_replacer(pat):
-            def replacer(match):
-                full_match = match.group(0)
-                return f"`{full_match}`"
-            return replacer
-        
         # Usar lookahead/lookbehind para evitar backticks
         safe_pattern = f'(?<!`)({pattern})(?!`)'
         result = re.sub(safe_pattern, r'`\1`', result)
