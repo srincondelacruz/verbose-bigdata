@@ -66,6 +66,13 @@ IMPORT_COMBINATIONS = {
     ),
 }
 
+# Constantes de configuración
+MAX_DESCRIPTION_LENGTH = 450
+MAX_SINGLE_DESCRIPTION_LENGTH = 180
+SENTENCE_BOUNDARY_THRESHOLD = 0.6
+TARGET_LINE_LENGTH = 80
+MULTILINE_INDENT = "      "
+
 
 def extract_number_from_folder(folder_name: str) -> int:
     """Extrae el número de práctica de un nombre de carpeta."""
@@ -166,7 +173,7 @@ def read_readme_objective(readme_path: Path) -> str:
         return ""
 
 
-def clean_description(text: str, max_length: int = 450) -> str:
+def clean_description(text: str, max_length: int = MAX_DESCRIPTION_LENGTH) -> str:
     """Limpia y formatea una descripción."""
     # Eliminar markdown innecesario
     text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)  # Negritas
@@ -176,12 +183,12 @@ def clean_description(text: str, max_length: int = 450) -> str:
     text = re.sub(r"\s+", " ", text)  # Normalizar espacios
     text = text.strip()
     
-    # Limitar longitud (aumentado de 200 a 450 caracteres)
+    # Limitar longitud
     if len(text) > max_length:
         # Intentar cortar en un punto natural (fin de oración)
         truncated = text[:max_length]
         last_period = truncated.rfind(".")
-        if last_period > max_length * 0.6:  # Si hay un punto razonable
+        if last_period > max_length * SENTENCE_BOUNDARY_THRESHOLD:
             text = truncated[:last_period + 1]
         else:
             text = truncated[:max_length - 3] + "..."
@@ -314,7 +321,7 @@ def analyze_notebook(notebook_path: Path) -> dict:
             seen = set()
             unique = []
             for desc in descriptions:
-                clean = clean_description(desc, max_length=180)
+                clean = clean_description(desc, max_length=MAX_SINGLE_DESCRIPTION_LENGTH)
                 if clean and clean.lower() not in seen:
                     seen.add(clean.lower())
                     unique.append(clean)
@@ -558,7 +565,7 @@ def scan_folders(base_path: Path) -> tuple[list, list]:
     return practicas, ejercicios
 
 
-def format_multiline_description(description: str, indent: str = "      ") -> str:
+def format_multiline_description(description: str, indent: str = MULTILINE_INDENT) -> str:
     """
     Formatea una descripción larga en múltiples líneas.
     
@@ -576,10 +583,9 @@ def format_multiline_description(description: str, indent: str = "      ") -> st
     lines = []
     current_line = []
     current_length = 0
-    target_line_length = 80  # Caracteres por línea aproximados
     
     for sentence in sentences:
-        if current_length + len(sentence) > target_line_length and current_line:
+        if current_length + len(sentence) > TARGET_LINE_LENGTH and current_line:
             lines.append(" ".join(current_line))
             current_line = [sentence]
             current_length = len(sentence)
