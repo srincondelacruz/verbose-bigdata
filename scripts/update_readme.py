@@ -339,7 +339,7 @@ def clean_description(text: str, max_length: int = MAX_DESCRIPTION_LENGTH) -> st
                 # Como último recurso, añadir un punto al final
                 text = truncated.rstrip() + "."
     
-    # Limpiar puntuación malformada al final (eliminar ":"  ";" antes de añadir punto)
+    # Limpiar puntuación malformada al final (eliminar ":" o ";" antes de añadir punto)
     text = text.rstrip()
     if text.endswith((':', ';')):
         text = text[:-1] + '.'
@@ -1004,7 +1004,7 @@ def generate_table_of_contents_with_tech(categorized: dict, has_cheatsheets: boo
     lines = [
         "## 📋 Tabla de Contenidos",
         "",
-        "- [🛠️ Tecnologías Utilizadas](#️-tecnologías-utilizadas)",
+        "- [🛠️ Tecnologías Utilizadas](#-tecnologías-utilizadas)",
     ]
     
     # Añadir enlaces a categorías
@@ -1040,48 +1040,44 @@ def generate_category_table(practicas: list, base_path: Path) -> list:
         "|:--------:|:-----|:------------|",
     ]
     
-    # Ordenar por número descendente, luego por nombre (para ordenar partes)
-    sorted_practicas = sorted(
-        practicas, 
-        key=lambda p: (extract_number_from_folder(p.name), p.name), 
-        reverse=True
-    )
-    
     # Agrupar prácticas por número para identificar múltiples partes
     practice_groups = {}
-    for practica in sorted_practicas:
+    for practica in practicas:
         num = extract_number_from_folder(practica.name)
         if num not in practice_groups:
             practice_groups[num] = []
         practice_groups[num].append(practica)
     
+    # Para cada grupo con múltiples partes, ordenar alfabéticamente por nombre
+    for num in practice_groups:
+        practice_groups[num] = sorted(practice_groups[num], key=lambda p: p.name)
+    
+    # Ordenar por número descendente para la tabla
+    sorted_nums = sorted(practice_groups.keys(), reverse=True)
+    
     # Generar filas de tabla
-    processed_nums = set()
-    for practica in sorted_practicas:
-        folder_name = practica.name
-        encoded_url = encode_folder_url(folder_name)
-        num = extract_number_from_folder(folder_name)
-        theme = get_practice_theme(folder_name)
-        
-        description = analyze_folder(practica)
-        # Formatear métodos con backticks
-        description = format_methods_with_backticks(description)
-        # Limpiar descripción para tabla (eliminar saltos de línea)
-        description = description.replace("\n", " ").strip()
-        
-        # Manejar prácticas con múltiples partes
-        if len(practice_groups.get(num, [])) > 1:
-            if num not in processed_nums:
-                processed_nums.add(num)
-            # Determinar el número de parte (orden alfabético de nombres)
-            parts = sorted(practice_groups[num], key=lambda p: p.name)
-            part_index = parts.index(practica) + 1
-            display_num = f"{num}.{part_index}"
-            theme = f"Parte {part_index}: {theme}"
-        else:
-            display_num = str(num)
-        
-        lines.append(f"| [**{display_num}**](./{encoded_url}/) | {theme} | {description} |")
+    for num in sorted_nums:
+        for practica in practice_groups[num]:
+            folder_name = practica.name
+            encoded_url = encode_folder_url(folder_name)
+            theme = get_practice_theme(folder_name)
+            
+            description = analyze_folder(practica)
+            # Formatear métodos con backticks
+            description = format_methods_with_backticks(description)
+            # Limpiar descripción para tabla (eliminar saltos de línea)
+            description = description.replace("\n", " ").strip()
+            
+            # Manejar prácticas con múltiples partes
+            if len(practice_groups[num]) > 1:
+                # Determinar el número de parte (orden alfabético de nombres)
+                part_index = practice_groups[num].index(practica) + 1
+                display_num = f"{num}.{part_index}"
+                theme = f"Parte {part_index}: {theme}"
+            else:
+                display_num = str(num)
+            
+            lines.append(f"| [**{display_num}**](./{encoded_url}/) | {theme} | {description} |")
     
     lines.append("")
     return lines
