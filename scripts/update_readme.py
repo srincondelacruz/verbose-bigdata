@@ -34,6 +34,45 @@ IMPORT_TOPICS = {
     "pymongo": "Bases de datos MongoDB",
 }
 
+# Descripciones elaboradas para combinaciones comunes de imports
+IMPORT_COMBINATIONS = {
+    frozenset(["pandas", "matplotlib"]): (
+        "Análisis y visualización de datos utilizando Pandas para manipulación "
+        "de DataFrames y Matplotlib para gráficos."
+    ),
+    frozenset(["pandas", "seaborn"]): (
+        "Análisis exploratorio de datos con Pandas y visualización estadística "
+        "avanzada con Seaborn."
+    ),
+    frozenset(["pandas", "numpy"]): (
+        "Manipulación y análisis de datos tabulares con Pandas y operaciones "
+        "numéricas eficientes con NumPy."
+    ),
+    frozenset(["pandas", "sklearn"]): (
+        "Preparación de datos con Pandas y aplicación de algoritmos de Machine "
+        "Learning con Scikit-learn."
+    ),
+    frozenset(["pyspark"]): (
+        "Procesamiento de datos distribuidos con Apache Spark usando PySpark. "
+        "Incluye operaciones de DataFrames, transformaciones y acciones."
+    ),
+    frozenset(["pandas", "matplotlib", "numpy"]): (
+        "Análisis de datos completo con Pandas para manipulación, NumPy para "
+        "cálculos numéricos y Matplotlib para visualización."
+    ),
+    frozenset(["pandas", "matplotlib", "seaborn"]): (
+        "Análisis exploratorio de datos (EDA) con Pandas y visualización "
+        "avanzada combinando Matplotlib y Seaborn."
+    ),
+}
+
+# Constantes de configuración
+MAX_DESCRIPTION_LENGTH = 450
+MAX_SINGLE_DESCRIPTION_LENGTH = 180
+SENTENCE_BOUNDARY_THRESHOLD = 0.6
+TARGET_LINE_LENGTH = 80
+MULTILINE_INDENT = "      "
+
 
 def extract_number_from_folder(folder_name: str) -> int:
     """Extrae el número de práctica de un nombre de carpeta."""
@@ -59,16 +98,20 @@ def format_folder_name(folder_name: str) -> str:
     elif folder_name.startswith("ejercicios_personales-"):
         name = folder_name.replace("ejercicios_personales-", "")
         return f"Ejercicios Personales: {name.title()}"
+    elif folder_name.startswith("ejercicios_personales_"):
+        name = folder_name.replace("ejercicios_personales_", "")
+        return f"Ejercicios Personales: {name.title()}"
     return folder_name
 
 
 def read_readme_objective(readme_path: Path) -> str:
     """
-    Lee un README.md y extrae el objetivo/descripción.
+    Lee un README.md y extrae el objetivo/descripción (hasta 3 oraciones).
     
     Busca:
     - Líneas con "Objetivo:" o "## Objetivo"
     - El primer párrafo descriptivo después del título
+    - Combina múltiples líneas para un resumen más completo
     """
     try:
         content = readme_path.read_text(encoding="utf-8")
@@ -79,15 +122,32 @@ def read_readme_objective(readme_path: Path) -> str:
             stripped = line.strip()
             # Buscar encabezados de objetivo: "## Objetivo", "## 🎯 Objetivo", etc.
             if stripped.startswith("#") and "objetivo" in stripped.lower():
-                # Tomar el siguiente párrafo no vacío
-                for j in range(i + 1, len(lines)):
+                # Recopilar múltiples líneas del objetivo (hasta 3 oraciones)
+                collected_lines = []
+                for j in range(i + 1, min(i + 10, len(lines))):
                     next_line = lines[j].strip()
-                    if next_line and not next_line.startswith("#") and next_line != "---":
-                        # Puede haber viñetas, tomar la primera o el párrafo
-                        if next_line.startswith("*") or next_line.startswith("-"):
-                            # Limpiar la viñeta
-                            next_line = next_line.lstrip("*- ").strip()
-                        return clean_description(next_line)
+                    # Detenerse si encontramos otro encabezado o separador
+                    if next_line.startswith("#") or next_line == "---":
+                        break
+                    if not next_line:
+                        # Línea vacía puede indicar fin de párrafo
+                        if collected_lines:
+                            break
+                        continue
+                    # Limpiar viñetas
+                    if next_line.startswith("*") or next_line.startswith("-"):
+                        next_line = next_line.lstrip("*- ").strip()
+                    if next_line:
+                        collected_lines.append(next_line)
+                        # Limitar a 3 oraciones
+                        full_text = " ".join(collected_lines)
+                        sentences = re.split(r'(?<=[.!?])\s+', full_text)
+                        if len(sentences) >= 3:
+                            break
+                
+                if collected_lines:
+                    full_text = " ".join(collected_lines)
+                    return clean_description(full_text)
         
         # Buscar "Objetivo:" en una línea
         for line in lines:
@@ -113,24 +173,36 @@ def read_readme_objective(readme_path: Path) -> str:
         return ""
 
 
-def clean_description(text: str) -> str:
+def clean_description(text: str, max_length: int = MAX_DESCRIPTION_LENGTH) -> str:
     """Limpia y formatea una descripción."""
     # Eliminar markdown innecesario
     text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)  # Negritas
     text = re.sub(r"\*([^*]+)\*", r"\1", text)  # Itálicas
     text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)  # Enlaces
+    text = re.sub(r"`([^`]+)`", r"\1", text)  # Código inline
+    text = re.sub(r"\s+", " ", text)  # Normalizar espacios
     text = text.strip()
     
     # Limitar longitud
-    if len(text) > 200:
-        text = text[:197] + "..."
+    if len(text) > max_length:
+        # Intentar cortar en un punto natural (fin de oración)
+        truncated = text[:max_length]
+        last_period = truncated.rfind(".")
+        if last_period > max_length * SENTENCE_BOUNDARY_THRESHOLD:
+            text = truncated[:last_period + 1]
+        else:
+            text = truncated[:max_length - 3] + "..."
     
     return text
 
 
 def analyze_notebook(notebook_path: Path) -> dict:
     """
-    Analiza un notebook Jupyter y extrae información.
+    Analiza un notebook Jupyter y extrae información de múltiples celdas.
+    
+    Busca en las primeras 5 celdas markdown para obtener más contexto.
+    Detecta patrones como "Objetivo:", "En esta práctica...", "Aprenderemos..."
+    Filtra ejercicios numerados y enfoca en títulos/descripciones principales.
     
     Returns:
         dict con 'description', 'imports' y 'topics'
@@ -142,6 +214,28 @@ def analyze_notebook(notebook_path: Path) -> dict:
         notebook = json.loads(content)
         cells = notebook.get("cells", [])
         
+        # Patrones de texto descriptivo a buscar (prioridad alta)
+        descriptive_patterns = [
+            r"(?:objetivo|propósito|meta)[\s:]+(.+)",
+            r"(?:en esta práctica|en este notebook)[\s,]+(.+)",
+            r"(?:aprenderemos|veremos|estudiaremos)[\s]+(.+)",
+            r"(?:introducción a|tutorial de|guía de)[\s]+(.+)",
+        ]
+        
+        # Patrones a ignorar (ejercicios, pasos numerados)
+        ignore_patterns = [
+            r"^(?:Ejercicio|Ejemplo|Paso|Tarea)\s*\d+",
+            r"^\d+\.\s*(?:Calcular|Crear|Usar|Buscar|Mostrar)",
+            r"^(?:Crea|Escribe|Define|Implementa)\s+(?:un|una|el|la)",
+        ]
+        
+        main_title = ""
+        priority_descriptions = []  # Descripciones de patrones específicos
+        title_descriptions = []     # Títulos markdown
+        
+        markdown_cells_checked = 0
+        max_markdown_cells = 5
+        
         for cell in cells:
             cell_type = cell.get("cell_type", "")
             source = cell.get("source", [])
@@ -149,29 +243,47 @@ def analyze_notebook(notebook_path: Path) -> dict:
                 source = "".join(source)
             
             if cell_type == "markdown":
-                # Buscar títulos o descripciones
-                if not result["description"]:
-                    lines = source.split("\n")
-                    for line in lines:
-                        stripped = line.strip()
-                        # Ignorar líneas vacías y blockquotes
-                        if not stripped or stripped.startswith(">"):
-                            continue
-                        # Buscar títulos con # (## Título, ### Título, etc.)
-                        if stripped.startswith("#"):
-                            title = stripped.lstrip("#").strip()
-                            # Ignorar títulos que son solo números o muy cortos
-                            if title and len(title) > 3:
-                                # Ignorar títulos que parecen ejemplos numerados
-                                if not re.match(r"^Ejemplo\s*\d+", title, re.IGNORECASE):
-                                    result["description"] = clean_description(title)
-                                    break
-                        # Si no empieza con #, podría ser texto descriptivo
-                        elif stripped and not stripped.startswith("!") and not stripped.startswith("*"):
-                            # Verificar si es una oración descriptiva (más de 10 caracteres)
-                            if len(stripped) > 10:
-                                result["description"] = clean_description(stripped)
+                markdown_cells_checked += 1
+                lines = source.split("\n")
+                
+                for line in lines:
+                    stripped = line.strip()
+                    # Ignorar líneas vacías, blockquotes y líneas muy cortas
+                    if not stripped or stripped.startswith(">") or len(stripped) < 5:
+                        continue
+                    
+                    # Verificar si es un patrón a ignorar
+                    should_ignore = False
+                    for ignore_pattern in ignore_patterns:
+                        if re.match(ignore_pattern, stripped, re.IGNORECASE):
+                            should_ignore = True
+                            break
+                    if should_ignore:
+                        continue
+                    
+                    # Buscar patrones descriptivos (alta prioridad)
+                    for pattern in descriptive_patterns:
+                        match = re.search(pattern, stripped, re.IGNORECASE)
+                        if match:
+                            desc = match.group(1).strip()
+                            if desc and len(desc) > 10:
+                                priority_descriptions.append(desc)
                                 break
+                    
+                    # Buscar títulos con # (## Título, ### Título, etc.)
+                    if stripped.startswith("#"):
+                        title = stripped.lstrip("#").strip()
+                        # Ignorar títulos que parecen ejercicios
+                        if title and len(title) > 5:
+                            if not re.match(r"^(?:Ejemplo|Ejercicio|Paso|Tarea)\s*\d+", title, re.IGNORECASE):
+                                # El primer título principal es especial
+                                if not main_title and stripped.startswith("# "):
+                                    main_title = title
+                                else:
+                                    title_descriptions.append(title)
+                
+                if markdown_cells_checked >= max_markdown_cells:
+                    break
             
             elif cell_type == "code":
                 # Extraer imports
@@ -184,6 +296,37 @@ def analyze_notebook(notebook_path: Path) -> dict:
                             result["imports"].add(module)
                             if module in IMPORT_TOPICS:
                                 result["topics"].add(IMPORT_TOPICS[module])
+        
+        # Construir descripción final
+        descriptions = []
+        
+        # Prioridad 1: Descripciones de patrones específicos (objetivo, etc.)
+        if priority_descriptions:
+            descriptions.extend(priority_descriptions[:2])
+        
+        # Prioridad 2: Título principal
+        if main_title and len(descriptions) < 2:
+            descriptions.insert(0, main_title)
+        
+        # Prioridad 3: Otros títulos relevantes
+        if title_descriptions and len(descriptions) < 2:
+            for title in title_descriptions[:2]:
+                if title not in descriptions:
+                    descriptions.append(title)
+                    if len(descriptions) >= 2:
+                        break
+        
+        # Combinar descripciones únicas
+        if descriptions:
+            seen = set()
+            unique = []
+            for desc in descriptions:
+                clean = clean_description(desc, max_length=MAX_SINGLE_DESCRIPTION_LENGTH)
+                if clean and clean.lower() not in seen:
+                    seen.add(clean.lower())
+                    unique.append(clean)
+            result["description"] = " ".join(unique[:2])
+    
     except (OSError, json.JSONDecodeError, UnicodeDecodeError, KeyError):
         pass
     
@@ -192,7 +335,10 @@ def analyze_notebook(notebook_path: Path) -> dict:
 
 def analyze_python_file(py_path: Path) -> dict:
     """
-    Analiza un archivo Python y extrae información.
+    Analiza un archivo Python y extrae información completa.
+    
+    Lee docstrings completos (no solo la primera línea), combina comentarios
+    iniciales, y busca definiciones de funciones/clases para inferir el tema.
     
     Returns:
         dict con 'description', 'imports' y 'topics'
@@ -203,34 +349,46 @@ def analyze_python_file(py_path: Path) -> dict:
         content = py_path.read_text(encoding="utf-8")
         lines = content.split("\n")
         
-        # Buscar docstring del módulo
+        # Buscar docstring del módulo (leer completo)
         in_docstring = False
         docstring_lines = []
+        initial_comments = []
+        docstring_quote = None
+        
         for line in lines:
             stripped = line.strip()
             if not in_docstring:
+                # Detectar inicio de docstring
                 if stripped.startswith('"""') or stripped.startswith("'''"):
+                    docstring_quote = stripped[:3]
                     in_docstring = True
                     # Docstring de una línea
-                    if stripped.count('"""') == 2 or stripped.count("'''") == 2:
+                    if stripped.count(docstring_quote) == 2:
                         docstring_lines.append(stripped[3:-3])
                         break
                     docstring_lines.append(stripped[3:])
                 elif stripped.startswith("#"):
-                    # Comentario inicial
+                    # Recopilar comentarios iniciales
                     comment = stripped.lstrip("#").strip()
-                    if comment and not result["description"]:
-                        result["description"] = comment
+                    if comment and not comment.startswith("-"):
+                        initial_comments.append(comment)
                 elif stripped and not stripped.startswith("import") and not stripped.startswith("from"):
+                    # Fin del preámbulo
                     break
             else:
-                if stripped.endswith('"""') or stripped.endswith("'''"):
+                if docstring_quote and stripped.endswith(docstring_quote):
                     docstring_lines.append(stripped[:-3])
                     break
                 docstring_lines.append(stripped)
         
+        # Usar docstring si existe, sino combinar comentarios iniciales
         if docstring_lines:
-            result["description"] = clean_description(" ".join(docstring_lines).strip())
+            full_docstring = " ".join(docstring_lines).strip()
+            result["description"] = clean_description(full_docstring)
+        elif initial_comments:
+            # Combinar los primeros comentarios (hasta 3)
+            combined = " ".join(initial_comments[:3])
+            result["description"] = clean_description(combined)
         
         # Extraer imports
         for line in lines:
@@ -242,6 +400,21 @@ def analyze_python_file(py_path: Path) -> dict:
                     result["imports"].add(module)
                     if module in IMPORT_TOPICS:
                         result["topics"].add(IMPORT_TOPICS[module])
+        
+        # Buscar definiciones de clases/funciones para inferir tema
+        class_names = []
+        for line in lines:
+            class_match = re.match(r"class\s+(\w+)", line)
+            if class_match:
+                class_names.append(class_match.group(1))
+        
+        # Si hay clases definidas y no hay descripción, mencionarlas
+        if class_names and not result["description"]:
+            if len(class_names) == 1:
+                result["description"] = f"Implementación de la clase {class_names[0]}."
+            else:
+                result["description"] = f"Implementación de clases: {', '.join(class_names[:3])}."
+    
     except (OSError, UnicodeDecodeError):
         pass
     
@@ -249,17 +422,47 @@ def analyze_python_file(py_path: Path) -> dict:
 
 
 def generate_description_from_imports(imports: set, topics: set, folder_name: str) -> str:
-    """Genera una descripción basada en los imports y temas detectados."""
+    """
+    Genera una descripción elaborada basada en los imports y temas detectados.
+    
+    Utiliza combinaciones de imports conocidas para generar descripciones
+    más completas y contextuales.
+    """
+    # Primero, buscar combinaciones conocidas de imports
+    known_imports = {imp for imp in imports if imp in IMPORT_TOPICS}
+    
+    if known_imports:
+        # Buscar la mejor combinación que coincida
+        best_match = None
+        best_match_size = 0
+        
+        for combo, description in IMPORT_COMBINATIONS.items():
+            if combo.issubset(known_imports) and len(combo) > best_match_size:
+                best_match = description
+                best_match_size = len(combo)
+        
+        if best_match:
+            return best_match
+        
+        # Si no hay combinación conocida, generar descripción compuesta
+        topics_list = sorted({IMPORT_TOPICS[imp] for imp in known_imports})
+        
+        if len(topics_list) == 1:
+            return f"Práctica de {topics_list[0]}."
+        elif len(topics_list) == 2:
+            return f"Práctica que combina {topics_list[0]} y {topics_list[1]}."
+        else:
+            main_topics = ", ".join(topics_list[:-1])
+            return f"Práctica que combina {main_topics} y {topics_list[-1]}."
+    
     if topics:
-        return f"Práctica de {', '.join(sorted(topics))}."
+        topics_list = sorted(topics)
+        if len(topics_list) == 1:
+            return f"Práctica de {topics_list[0]}."
+        else:
+            return f"Práctica de {', '.join(topics_list)}."
     
-    if imports:
-        known_imports = [imp for imp in imports if imp in IMPORT_TOPICS]
-        if known_imports:
-            topics_from_imports = [IMPORT_TOPICS[imp] for imp in known_imports]
-            return f"Práctica de {', '.join(sorted(set(topics_from_imports)))}."
-    
-    # Generar descripción genérica basada en el nombre de la carpeta
+    # Generar descripción basada en el nombre de la carpeta
     name = folder_name.split("-", 1)[-1] if "-" in folder_name else folder_name
     name = name.replace("_", " ").replace("-", " ").title()
     return f"Práctica sobre {name}."
@@ -267,24 +470,32 @@ def generate_description_from_imports(imports: set, topics: set, folder_name: st
 
 def analyze_folder(folder_path: Path) -> str:
     """
-    Analiza una carpeta de práctica y genera una descripción.
+    Analiza una carpeta de práctica y genera una descripción completa.
     
-    1. Si existe README.md, extrae el objetivo
-    2. Si no, analiza los archivos .py y .ipynb
-    3. Si no puede inferir nada, genera descripción genérica
+    Combina información de múltiples fuentes:
+    1. Si existe README.md o TUTORIAL.md, extrae hasta 3 oraciones del objetivo
+    2. Si no, combina información de notebooks, archivos Python e imports
+    3. Utiliza el nombre de la carpeta como contexto adicional
     """
+    # Caso 1: Existe README.md - usar como fuente principal
     readme_path = folder_path / "README.md"
-    
-    # Caso 1: Existe README.md
     if readme_path.exists():
         objective = read_readme_objective(readme_path)
         if objective:
             return objective
     
-    # Caso 2: Analizar archivos
+    # Caso 1b: Existe TUTORIAL.md - usar como fuente secundaria
+    tutorial_path = folder_path / "TUTORIAL.md"
+    if tutorial_path.exists():
+        objective = read_readme_objective(tutorial_path)
+        if objective:
+            return objective
+    
+    # Caso 2: Analizar archivos y combinar información
     all_imports = set()
     all_topics = set()
-    descriptions = []
+    notebook_descriptions = []
+    python_descriptions = []
     
     # Analizar notebooks
     for notebook in folder_path.glob("*.ipynb"):
@@ -292,7 +503,7 @@ def analyze_folder(folder_path: Path) -> str:
         all_imports.update(info["imports"])
         all_topics.update(info["topics"])
         if info["description"]:
-            descriptions.append(info["description"])
+            notebook_descriptions.append(info["description"])
     
     # Analizar archivos Python
     for py_file in folder_path.glob("*.py"):
@@ -300,13 +511,28 @@ def analyze_folder(folder_path: Path) -> str:
         all_imports.update(info["imports"])
         all_topics.update(info["topics"])
         if info["description"]:
-            descriptions.append(info["description"])
+            python_descriptions.append(info["description"])
     
-    # Usar primera descripción encontrada
-    if descriptions:
-        return descriptions[0]
+    # Construir descripción final
+    final_description = ""
     
-    # Generar descripción desde imports
+    # Priorizar descripciones de notebooks (suelen ser más descriptivas)
+    if notebook_descriptions:
+        final_description = notebook_descriptions[0]
+    elif python_descriptions:
+        final_description = python_descriptions[0]
+    
+    # Si tenemos una descripción, opcionalmente añadir contexto tecnológico
+    if final_description:
+        # Solo añadir info de imports si la descripción es corta
+        if all_imports and len(final_description) < 200:
+            tech_desc = generate_description_from_imports(all_imports, all_topics, folder_path.name)
+            # Evitar redundancia con descripciones genéricas
+            if tech_desc and "Práctica sobre" not in tech_desc:
+                final_description = f"{final_description} {tech_desc}"
+        return clean_description(final_description)
+    
+    # Generar descripción desde imports si no hay otras fuentes
     return generate_description_from_imports(all_imports, all_topics, folder_path.name)
 
 
@@ -339,8 +565,57 @@ def scan_folders(base_path: Path) -> tuple[list, list]:
     return practicas, ejercicios
 
 
+def format_multiline_description(description: str, indent: str = MULTILINE_INDENT) -> str:
+    """
+    Formatea una descripción larga en múltiples líneas.
+    
+    Divide el texto en oraciones y las distribuye en 2-3 líneas
+    para mejor legibilidad en el README.
+    """
+    # Dividir en oraciones
+    sentences = re.split(r'(?<=[.!?])\s+', description)
+    sentences = [s.strip() for s in sentences if s.strip()]
+    
+    if len(sentences) <= 1:
+        return description
+    
+    # Distribuir en líneas (objetivo: 2-3 líneas)
+    lines = []
+    current_line = []
+    current_length = 0
+    
+    for sentence in sentences:
+        if current_length + len(sentence) > TARGET_LINE_LENGTH and current_line:
+            lines.append(" ".join(current_line))
+            current_line = [sentence]
+            current_length = len(sentence)
+        else:
+            current_line.append(sentence)
+            current_length += len(sentence) + 1
+    
+    if current_line:
+        lines.append(" ".join(current_line))
+    
+    # Limitar a 3 líneas
+    lines = lines[:3]
+    
+    # Formatear con saltos de línea e indentación
+    if len(lines) == 1:
+        return lines[0]
+    
+    return f"\n{indent}".join(lines)
+
+
 def generate_readme(base_path: Path, practicas: list, ejercicios: list) -> str:
-    """Genera el contenido del README.md principal."""
+    """
+    Genera el contenido del README.md principal.
+    
+    Formato de cada entrada:
+    * **[Práctica XX: Nombre](./practica_XX-nombre/)**
+        * *Objetivo: Primera línea del resumen.
+          Segunda línea con más detalles.
+          Tercera línea opcional.*
+    """
     lines = [
         "# Prácticas del Módulo Big Data (Curso 2025)",
         "",
@@ -355,9 +630,10 @@ def generate_readme(base_path: Path, practicas: list, ejercicios: list) -> str:
         folder_name = practica.name
         display_name = format_folder_name(folder_name)
         description = analyze_folder(practica)
+        formatted_desc = format_multiline_description(description)
         
         lines.append(f"* **[{display_name}](./{folder_name}/)**")
-        lines.append(f"    * *Objetivo: {description}*")
+        lines.append(f"    * *Objetivo: {formatted_desc}*")
         lines.append("")
     
     if ejercicios:
@@ -368,9 +644,11 @@ def generate_readme(base_path: Path, practicas: list, ejercicios: list) -> str:
             folder_name = ejercicio.name
             display_name = format_folder_name(folder_name)
             description = analyze_folder(ejercicio)
+            formatted_desc = format_multiline_description(description)
             
             lines.append(f"* **[{display_name}](./{folder_name}/)**")
-            lines.append(f"    * *Objetivo: {description}*")
+            lines.append(f"    * *Objetivo: {formatted_desc}*")
+            lines.append("")
     
     return "\n".join(lines)
 
