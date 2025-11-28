@@ -59,6 +59,9 @@ def format_folder_name(folder_name: str) -> str:
     elif folder_name.startswith("ejercicios_personales-"):
         name = folder_name.replace("ejercicios_personales-", "")
         return f"Ejercicios Personales: {name.title()}"
+    elif folder_name.startswith("ejercicios_personales_"):
+        name = folder_name.replace("ejercicios_personales_", "")
+        return f"Ejercicios Personales: {name.title()}"
     return folder_name
 
 
@@ -371,6 +374,7 @@ def generate_readme(base_path: Path, practicas: list, ejercicios: list) -> str:
             
             lines.append(f"* **[{display_name}](./{folder_name}/)**")
             lines.append(f"    * *Objetivo: {description}*")
+            lines.append("")
     
     return "\n".join(lines)
 
