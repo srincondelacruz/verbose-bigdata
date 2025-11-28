@@ -13,6 +13,36 @@ from pathlib import Path
 from urllib.parse import quote
 
 
+# Correcciones para nombres de temas (acrónimos y tildes)
+THEME_CORRECTIONS = {
+    "Oop": "OOP",
+    "Pyspark": "PySpark",
+    "Kpis": "KPIs",
+    "Basico": "Básico",
+    "Modular": "Modular",
+    "Pandas": "Pandas",
+    "Data Cleaning Pandas": "Data Cleaning con Pandas",
+    "Pandas Kpis": "KPIs con Pandas",
+    "Pyspark Basico": "PySpark Básico",
+    "Tipos De Argumentos": "Tipos de Argumentos",
+    "Programacion Modular": "Programación Modular",
+    "Distribucion Paquetes": "Distribución de Paquetes",
+    "Casos Data Science": "Casos de Data Science",
+    "Feature Engineering": "Feature Engineering",
+}
+
+# Tecnologías con sus iconos y descripciones para la sección de tecnologías
+TECHNOLOGY_INFO = {
+    "pandas": ("🐼 Pandas", "Análisis y manipulación de datos"),
+    "numpy": ("🔢 NumPy", "Computación numérica"),
+    "pyspark": ("⚡ PySpark", "Procesamiento distribuido"),
+    "spark": ("⚡ Spark", "Procesamiento distribuido"),
+    "matplotlib": ("📊 Matplotlib", "Visualización de datos"),
+    "seaborn": ("📈 Seaborn", "Visualización estadística"),
+    "sklearn": ("🤖 Scikit-learn", "Machine Learning"),
+    "jupyter": ("📓 Jupyter", "Notebooks interactivos"),
+}
+
 # Mapeo de imports a temas
 IMPORT_TOPICS = {
     "pandas": "Análisis de datos con Pandas",
@@ -266,7 +296,12 @@ def read_readme_objective(readme_path: Path) -> str:
 
 
 def clean_description(text: str, max_length: int = MAX_DESCRIPTION_LENGTH) -> str:
-    """Limpia y formatea una descripción."""
+    """
+    Limpia y formatea una descripción.
+    
+    Las descripciones siempre terminan en una oración completa (en un punto `.`)
+    y nunca muestran `[...]` al final.
+    """
     # Preservar *args y **kwargs antes de procesar markdown
     # Usar marcadores temporales para protegerlos
     text = re.sub(r'`\*\*kwargs`', '<<DOUBLE_STAR_KWARGS>>', text)
@@ -286,15 +321,36 @@ def clean_description(text: str, max_length: int = MAX_DESCRIPTION_LENGTH) -> st
     text = text.replace('<<DOUBLE_STAR_KWARGS>>', '**kwargs')
     text = text.replace('<<STAR_ARGS>>', '*args')
     
-    # Limitar longitud
+    # Limitar longitud - siempre terminar en un punto, nunca usar [...]
     if len(text) > max_length:
-        # Intentar cortar en un punto natural (fin de oración)
+        # Buscar el último punto dentro del límite
         truncated = text[:max_length]
         last_period = truncated.rfind(".")
-        if last_period > max_length * SENTENCE_BOUNDARY_THRESHOLD:
+        
+        if last_period > 0:
+            # Cortar en el último punto
             text = truncated[:last_period + 1]
         else:
-            text = truncated[:max_length - 3] + "..."
+            # Si no hay punto, buscar en todo el texto y tomar la primera oración
+            first_period = text.find(".")
+            if first_period > 0:
+                text = text[:first_period + 1]
+            else:
+                # Como último recurso, añadir un punto al final
+                text = truncated.rstrip() + "."
+    
+    # Limpiar puntuación malformada al final (eliminar ":" o ";" antes de añadir punto)
+    text = text.rstrip()
+    if text.endswith((':', ';')):
+        text = text[:-1] + '.'
+    
+    # Limpiar puntuación duplicada o malformada (":.", "..", ";.")
+    text = re.sub(r'[;:]\s*\.', '.', text)  # ";." o ":." → "."
+    text = re.sub(r'\.{2,}', '.', text)  # ".." → "."
+    
+    # Asegurar que termina en punto si no tiene puntuación final
+    if text and not text.endswith(('.', '!', '?')):
+        text = text.rstrip() + "."
     
     return text
 
@@ -716,6 +772,8 @@ def get_practice_theme(folder_name: str) -> str:
     """
     Extrae el tema de una práctica del nombre de la carpeta.
     
+    Aplica correcciones para acrónimos (OOP, PySpark, KPIs) y tildes.
+    
     Ejemplo: practica_21-pySpark_basico → PySpark Básico
     """
     match = re.match(r"practica_\d+-(.+)", folder_name)
@@ -723,7 +781,22 @@ def get_practice_theme(folder_name: str) -> str:
         name = match.group(1)
         # Reemplazar separadores y capitalizar
         name = name.replace("_", " ").replace("-", " ")
-        return name.title()
+        name = name.title()
+        
+        # Aplicar corrección completa si existe
+        if name in THEME_CORRECTIONS:
+            return THEME_CORRECTIONS[name]
+        
+        # Aplicar correcciones palabra por palabra
+        words = name.split()
+        corrected_words = []
+        for word in words:
+            if word in THEME_CORRECTIONS:
+                corrected_words.append(THEME_CORRECTIONS[word])
+            else:
+                corrected_words.append(word)
+        
+        return " ".join(corrected_words)
     return ""
 
 
@@ -751,16 +824,152 @@ def get_cheatsheet_files(cheatsheets_path: Path) -> list:
     """
     Obtiene la lista de archivos markdown en la carpeta cheatsheets.
     
+    Extrae la descripción real del contenido de cada archivo (título o primer párrafo).
+    
     Returns:
-        Lista de tuples (nombre_archivo, nombre_display)
+        Lista de tuples (nombre_archivo, nombre_display, descripcion)
     """
     files = []
     if cheatsheets_path.exists():
         for f in cheatsheets_path.glob("*.md"):
             name = f.stem
             display_name = name.replace("_", " ").title()
-            files.append((f.name, display_name))
-    return sorted(files)
+            
+            # Extraer descripción del archivo
+            description = extract_cheatsheet_description(f)
+            
+            files.append((f.name, display_name, description))
+    return sorted(files, key=lambda x: x[0])
+
+
+def extract_cheatsheet_description(file_path: Path) -> str:
+    """
+    Extrae la descripción de un archivo de cheatsheet.
+    
+    Busca el título principal (# Título) y lo usa como descripción.
+    Si no hay título, usa el primer párrafo descriptivo.
+    """
+    try:
+        content = file_path.read_text(encoding="utf-8")
+        lines = content.split("\n")
+        
+        for line in lines:
+            stripped = line.strip()
+            # Buscar título principal (# Título)
+            if stripped.startswith("# "):
+                title = stripped.lstrip("#").strip()
+                # Limpiar emojis del inicio del título
+                title = re.sub(r'^[\U0001F300-\U0001F9FF\s]+', '', title).strip()
+                if title:
+                    return title
+        
+        # Si no hay título, buscar primer párrafo
+        for line in lines:
+            stripped = line.strip()
+            if stripped and not stripped.startswith("#") and not stripped.startswith("-") and len(stripped) > 10:
+                return clean_description(stripped, max_length=100)
+        
+        return "Guía de referencia rápida"
+    except (OSError, UnicodeDecodeError):
+        return "Guía de referencia rápida"
+
+
+def scan_all_technologies(base_path: Path, practicas: list, ejercicios: list) -> set:
+    """
+    Escanea todos los archivos Python y notebooks para detectar tecnologías utilizadas.
+    
+    Returns:
+        Set de nombres de imports detectados
+    """
+    all_imports = set()
+    
+    # Escanear prácticas
+    for practica in practicas:
+        for notebook in practica.glob("**/*.ipynb"):
+            info = analyze_notebook(notebook)
+            all_imports.update(info["imports"])
+        for py_file in practica.glob("**/*.py"):
+            info = analyze_python_file(py_file)
+            all_imports.update(info["imports"])
+    
+    # Escanear ejercicios
+    for ejercicio in ejercicios:
+        for notebook in ejercicio.glob("**/*.ipynb"):
+            info = analyze_notebook(notebook)
+            all_imports.update(info["imports"])
+        for py_file in ejercicio.glob("**/*.py"):
+            info = analyze_python_file(py_file)
+            all_imports.update(info["imports"])
+    
+    return all_imports
+
+
+def generate_technology_section(detected_imports: set) -> list:
+    """
+    Genera la sección de tecnologías utilizadas basada en imports detectados.
+    
+    Returns:
+        Lista de líneas de markdown para la sección de tecnologías
+    """
+    lines = [
+        "## 🛠️ Tecnologías Utilizadas",
+        "",
+        "| Tecnología | Uso |",
+        "|:-----------|:----|",
+        "| 🐍 Python 3.11 | Lenguaje principal |",
+    ]
+    
+    # Añadir tecnologías detectadas
+    added_techs = set()
+    for imp in detected_imports:
+        if imp in TECHNOLOGY_INFO and imp not in added_techs:
+            tech_name, tech_desc = TECHNOLOGY_INFO[imp]
+            lines.append(f"| {tech_name} | {tech_desc} |")
+            added_techs.add(imp)
+    
+    # Siempre añadir Jupyter (hay notebooks)
+    if "jupyter" not in added_techs:
+        lines.append("| 📓 Jupyter | Notebooks interactivos |")
+    
+    lines.append("")
+    return lines
+
+
+def generate_header(practicas: list) -> list:
+    """
+    Genera el header del README con badges y contador de prácticas.
+    
+    Incluye:
+    - Título
+    - Badges de tecnologías (Python, Jupyter, License)
+    - Descripción
+    - Contador de prácticas completadas
+    """
+    # Contar prácticas únicas (por número)
+    practice_numbers = set()
+    for practica in practicas:
+        num = extract_number_from_folder(practica.name)
+        practice_numbers.add(num)
+    
+    completed = len(practice_numbers)
+    total = 21  # Total de prácticas esperadas en el curso
+    
+    lines = [
+        "# 🎓 Prácticas del Módulo Big Data (Curso 2025)",
+        "",
+        "![Python](https://img.shields.io/badge/Python-3.11-blue)",
+        "![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-orange)",
+        "![License](https://img.shields.io/badge/License-MIT-green)",
+        "",
+        "> 📚 Repositorio con todas las prácticas de la asignatura de Big Data.",
+        ">",
+        f"> **Prácticas completadas:** {completed}/{total}",
+        "",
+        "---",
+        "",
+    ]
+    
+    return lines
 
 
 def generate_table_of_contents(categorized: dict, has_cheatsheets: bool, has_ejercicios: bool) -> list:
@@ -788,40 +997,87 @@ def generate_table_of_contents(categorized: dict, has_cheatsheets: bool, has_eje
     return lines
 
 
+def generate_table_of_contents_with_tech(categorized: dict, has_cheatsheets: bool, has_ejercicios: bool) -> list:
+    """
+    Genera la tabla de contenidos con enlaces internos, incluyendo la sección de tecnologías.
+    """
+    lines = [
+        "## 📋 Tabla de Contenidos",
+        "",
+        "- [🛠️ Tecnologías Utilizadas](#-tecnologías-utilizadas)",
+    ]
+    
+    # Añadir enlaces a categorías
+    for cat_key in ["bigdata", "python_advanced", "modularidad"]:
+        if categorized.get(cat_key):
+            cat_info = CATEGORIES[cat_key]
+            lines.append(f"- [{cat_info['title']}](#{cat_info['anchor']})")
+    
+    if has_cheatsheets:
+        lines.append("- [📚 Cheatsheets](#-cheatsheets)")
+    
+    if has_ejercicios:
+        lines.append("- [🏆 Proyectos Personales](#-proyectos-personales)")
+    
+    lines.append("")
+    return lines
+
+
 def generate_category_table(practicas: list, base_path: Path) -> list:
     """
     Genera una tabla markdown para una lista de prácticas.
+    
+    Maneja prácticas con múltiples partes (ej: práctica 14.1, 14.2).
     
     Formato:
     | Práctica | Tema | Descripción |
     |:--------:|:-----|:------------|
     | [**21**](./practica_21/) | PySpark Básico | Descripción... |
+    | [**14.1**](./practica_14-distribucion/) | Parte 1 | Descripción... |
     """
     lines = [
         "| Práctica | Tema | Descripción |",
         "|:--------:|:-----|:------------|",
     ]
     
-    # Ordenar por número descendente
-    sorted_practicas = sorted(
-        practicas, 
-        key=lambda p: extract_number_from_folder(p.name), 
-        reverse=True
-    )
+    # Agrupar prácticas por número para identificar múltiples partes
+    practice_groups = {}
+    for practica in practicas:
+        num = extract_number_from_folder(practica.name)
+        if num not in practice_groups:
+            practice_groups[num] = []
+        practice_groups[num].append(practica)
     
-    for practica in sorted_practicas:
-        folder_name = practica.name
-        encoded_url = encode_folder_url(folder_name)
-        num = extract_number_from_folder(folder_name)
-        theme = get_practice_theme(folder_name)
-        
-        description = analyze_folder(practica)
-        # Formatear métodos con backticks
-        description = format_methods_with_backticks(description)
-        # Limpiar descripción para tabla (eliminar saltos de línea)
-        description = description.replace("\n", " ").strip()
-        
-        lines.append(f"| [**{num}**](./{encoded_url}/) | {theme} | {description} |")
+    # Para cada grupo con múltiples partes, ordenar alfabéticamente por nombre
+    for num in practice_groups:
+        practice_groups[num] = sorted(practice_groups[num], key=lambda p: p.name)
+    
+    # Ordenar por número descendente para la tabla
+    sorted_nums = sorted(practice_groups.keys(), reverse=True)
+    
+    # Generar filas de tabla
+    for num in sorted_nums:
+        for practica in practice_groups[num]:
+            folder_name = practica.name
+            encoded_url = encode_folder_url(folder_name)
+            theme = get_practice_theme(folder_name)
+            
+            description = analyze_folder(practica)
+            # Formatear métodos con backticks
+            description = format_methods_with_backticks(description)
+            # Limpiar descripción para tabla (eliminar saltos de línea)
+            description = description.replace("\n", " ").strip()
+            
+            # Manejar prácticas con múltiples partes
+            if len(practice_groups[num]) > 1:
+                # Determinar el número de parte (orden alfabético de nombres)
+                part_index = practice_groups[num].index(practica) + 1
+                display_num = f"{num}.{part_index}"
+                theme = f"Parte {part_index}: {theme}"
+            else:
+                display_num = str(num)
+            
+            lines.append(f"| [**{display_num}**](./{encoded_url}/) | {theme} | {description} |")
     
     lines.append("")
     return lines
@@ -832,20 +1088,15 @@ def generate_readme(base_path: Path, practicas: list, ejercicios: list, cheatshe
     Genera el contenido del README.md principal con formato profesional.
     
     Incluye:
-    - Header con título y descripción
+    - Header con badges y contador de prácticas
     - Tabla de contenidos con navegación
+    - Sección de tecnologías utilizadas
     - Secciones categorizadas con tablas markdown
     - Métodos formateados con backticks
     - URLs correctamente codificadas
     """
-    lines = [
-        "# 🎓 Prácticas del Módulo Big Data (Curso 2025)",
-        "",
-        "> Repositorio con todas las prácticas de la asignatura de Big Data.",
-        "",
-        "---",
-        "",
-    ]
+    # Header con badges
+    lines = generate_header(practicas)
     
     # Categorizar prácticas
     categorized = categorize_practices(practicas)
@@ -853,10 +1104,14 @@ def generate_readme(base_path: Path, practicas: list, ejercicios: list, cheatshe
     has_cheatsheets = bool(cheatsheets)
     has_ejercicios = bool(ejercicios)
     
-    # Tabla de contenidos
-    lines.extend(generate_table_of_contents(categorized, has_cheatsheets, has_ejercicios))
+    # Tabla de contenidos (actualizada con sección de tecnologías)
+    lines.extend(generate_table_of_contents_with_tech(categorized, has_cheatsheets, has_ejercicios))
     lines.append("---")
     lines.append("")
+    
+    # Sección de tecnologías utilizadas
+    detected_imports = scan_all_technologies(base_path, practicas, ejercicios)
+    lines.extend(generate_technology_section(detected_imports))
     
     # Sección de Big Data y Analytics (18-21)
     if categorized["bigdata"]:
@@ -886,9 +1141,9 @@ def generate_readme(base_path: Path, practicas: list, ejercicios: list, cheatshe
         cheatsheet_path = cheatsheets[0]  # Solo hay una carpeta cheatsheets
         cheatsheet_files = get_cheatsheet_files(cheatsheet_path)
         
-        for filename, display_name in cheatsheet_files:
+        for filename, display_name, description in cheatsheet_files:
             encoded_path = f"./cheatsheets/{quote(filename, safe='')}"
-            lines.append(f"| [**{display_name}**]({encoded_path}) | Guía de referencia rápida |")
+            lines.append(f"| [**{display_name}**]({encoded_path}) | {description} |")
         
         lines.append("")
     
