@@ -1,48 +1,68 @@
-# Prácticas del Módulo Big Data (Curso 2025)
+# 🎓 Prácticas del Módulo Big Data (Curso 2025)
 
-Repositorio con todas las prácticas de la asignatura.
+> Repositorio con todas las prácticas de la asignatura de Big Data.
 
 ---
-## 📂 Índice de Prácticas
 
-* **[Práctica 21: Pyspark Basico](./practica_21-pySpark_basico/)**
-    * *Objetivo: Procesamiento de datos distribuidos con Apache Spark usando PySpark.
-      Incluye operaciones de DataFrames, transformaciones y acciones.*
+## 📋 Tabla de Contenidos
 
-* **[Práctica 20: Feature Engineering](./practica_20-Feature_Engineering/)**
-    * *Objetivo: Manipulación y análisis de datos tabulares con Pandas y operaciones numéricas eficientes con NumPy.*
+- [🔥 Prácticas de Big Data y Analytics](#-prácticas-de-big-data-y-analytics)
+- [🐍 Prácticas de Python Avanzado](#-prácticas-de-python-avanzado)
+- [📦 Prácticas de Modularidad y Distribución](#-prácticas-de-modularidad-y-distribución)
+- [📚 Material de Referencia](#-material-de-referencia)
+- [🏆 Proyectos Personales](#-proyectos-personales)
 
-* **[Práctica 19: Pandas Kpis](./practica_19-Pandas KPIs/)**
-    * *Objetivo: Calcular el porcentaje de usuarios registrados que se convirtieron de plan gratuito a plan de pago.
-      Para los usuarios que compraron un plan de pago, calcular el tiempo promedio (en días) que transcurrió entre su registro y su primera compra.*
+---
 
-* **[Práctica 18: Data Cleaning Pandas](./practica_18-data-cleaning-pandas/)**
-    * *Objetivo: Dominar la librería Pandas para transformar datasets "sucios" en datos listos para análisis, cubriendo desde la selección básica hasta el manejo avanzado de índices y outliers.*
+## 🔥 Prácticas de Big Data y Analytics
 
-* **[Práctica 17: Herencia](./practica_17-Herencia/)**
-    * *Objetivo: Distinguir y aplicar Métodos de Instancia (self), Métodos de Clase (@classmethod) y Métodos Estáticos (@staticmethod).
-      Implementar Herencia Simple para crear jerarquías de clases lógicas.
-      Utilizar super() para extender la funcionalidad de las clases padre.*
+| Práctica | Tema | Descripción |
+|:--------:|:-----|:------------|
+| [**21**](./practica_21-pySpark_basico/) | PySpark Básico | Procesamiento de datos distribuidos con Apache Spark. Incluye operaciones de `DataFrames`, transformaciones (`select()`, `filter()`, `groupBy()`) y acciones (`show()`, `collect()`). |
+| [**20**](./practica_20-Feature_Engineering/) | Feature Engineering | Manipulación y análisis de datos tabulares con Pandas (`pd.cut()`, `get_dummies()`) y operaciones numéricas eficientes con NumPy. |
+| [**19**](./practica_19-Pandas%20KPIs/) | Pandas KPIs | Cálculo de métricas de negocio: tasa de conversión, tiempo promedio de conversión usando `groupby()`, `merge()` y operaciones con fechas. |
+| [**18**](./practica_18-data-cleaning-pandas/) | Data Cleaning Pandas | Limpieza de datos con Pandas: manejo de nulos (`fillna()`, `dropna()`), duplicados (`drop_duplicates()`), selección con `loc`/`iloc` y detección de outliers. |
 
-* **[Práctica 16: Oop](./practica_16-OOP/)**
-    * *Objetivo: Dominar los pilares de la OOP: clases, objetos, atributos (de instancia y de clase), métodos (@classmethod), el constructor __init__, la encapsulación (__privado) y la interacción entre clases.*
+---
 
-* **[Práctica 15: Comprehensions](./practica_15-Comprehensions/)**
-    * *Objetivo: Este directorio contiene los ejercicios de la Práctica 15, divididos en dos partes principales:*
+## 🐍 Prácticas de Python Avanzado
 
-* **[Práctica 14: Distribucion Paquetes](./practica_14-distribucion-paquetes/)**
-    * *Objetivo: Esta carpeta contiene todos los ejercicios y casos prácticos relacionados con la lección sobre distribución de paquetes en Python.*
+| Práctica | Tema | Descripción |
+|:--------:|:-----|:------------|
+| [**17**](./practica_17-Herencia/) | Herencia | Métodos de instancia (`self`), métodos de clase (`@classmethod`), métodos estáticos (`@staticmethod`), herencia simple y uso de `super()`. |
+| [**16**](./practica_16-OOP/) | Programación Orientada a Objetos | Clases, objetos, atributos de instancia y clase, constructor `__init__()`, encapsulación con `__privado` e interacción entre clases. |
+| [**15**](./practica_15-Comprehensions/) | Comprehensions | List comprehensions, dict comprehensions y set comprehensions para código más pythónico y eficiente. |
 
-* **[Práctica 14: Casos Data Science](./practica_14-casos_data_science/)**
-    * *Objetivo: Esta carpeta contiene la segunda parte de la Práctica 14, que consiste en notebooks de Jupyter para ejecutar y entender librerías fundamentales de Data Science.*
+---
 
-* **[Práctica 13: Programacion Modular](./practica_13-programacion-modular/)**
-    * *Objetivo: Este directorio es un "laboratorio" que contiene las soluciones a múltiples ejercicios propuestos sobre modularidad, paquetes y refactorización de código.*
+## 📦 Prácticas de Modularidad y Distribución
 
-* **[Práctica 12: Tipos De Argumentos](./practica_12-tipos_de_argumentos/)**
-    * *Objetivo: Este documento cubre los diferentes tipos de argumentos en las funciones de Python (posicionales, keywords, args, *kwargs, valores por defecto) y el concepto de alcance de variables (global).*
+| Práctica | Tema | Descripción |
+|:--------:|:-----|:------------|
+| [**14a**](./practica_14-distribucion-paquetes/) | Distribución de Paquetes | Creación y distribución de paquetes Python: `setup.py`, `pyproject.toml` y publicación en PyPI. |
+| [**14b**](./practica_14-casos_data_science/) | Casos Data Science | Notebooks de Jupyter para entender librerías fundamentales: NumPy, Pandas, Matplotlib y Seaborn. |
+| [**13**](./practica_13-programacion-modular/) | Programación Modular | Modularidad, paquetes y refactorización de código. Uso de `import`, `__init__.py` y estructura de proyectos. |
+| [**12**](./practica_12-tipos_de_argumentos/) | Tipos de Argumentos | Argumentos posicionales, keyword, `*args`, `**kwargs`, valores por defecto y alcance de variables (`global`). |
 
-## 📂 Índice de Proyectos Personales
+---
 
-* **[Ejercicios Personales: Leetcode](./ejercicios_personales-leetcode/)**
-    * *Objetivo: El objetivo de este proyecto es doble: mejorar la capacidad de escribir código eficiente (eficiencia O(n)) y dominar las estructuras de datos y algoritmos fundamentales de Python (DS&A).*
+## 📚 Material de Referencia
+
+| Recurso | Descripción |
+|:--------|:------------|
+| [📘 Cheatsheet Pandas](./cheatsheets/pandas_complete_cheatsheet.md) | Guía completa de Pandas: limpieza de datos, KPIs, agregaciones, visualización y más. |
+| [⚡ Comandos PySpark](./cheatsheets/pyspark_commands.md) | Referencia rápida de comandos y funciones de PySpark. |
+
+---
+
+## 🏆 Proyectos Personales
+
+| Proyecto | Descripción |
+|:---------|:------------|
+| [**LeetCode**](./ejercicios_personales-leetcode/) | Ejercicios de algoritmos y estructuras de datos. Enfoque en eficiencia `O(n)` y DS&A fundamentales de Python. |
+
+---
+
+## 📄 Licencia
+
+Este repositorio está bajo la [Licencia MIT](./LICENSE.md).
