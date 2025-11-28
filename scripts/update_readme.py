@@ -779,7 +779,7 @@ def generate_table_of_contents(categorized: dict, has_cheatsheets: bool, has_eje
             lines.append(f"- [{cat_info['title']}](#{cat_info['anchor']})")
     
     if has_cheatsheets:
-        lines.append("- [📚 Material de Referencia](#-material-de-referencia)")
+        lines.append("- [📚 Cheatsheets](#-cheatsheets)")
     
     if has_ejercicios:
         lines.append("- [🏆 Proyectos Personales](#-proyectos-personales)")
@@ -876,9 +876,9 @@ def generate_readme(base_path: Path, practicas: list, ejercicios: list, cheatshe
         lines.append("")
         lines.extend(generate_category_table(categorized["modularidad"], base_path))
     
-    # Sección de Material de Referencia (cheatsheets)
+    # Sección de Cheatsheets
     if cheatsheets:
-        lines.append("## 📚 Material de Referencia")
+        lines.append("## 📚 Cheatsheets")
         lines.append("")
         lines.append("| Recurso | Descripción |")
         lines.append("|:--------|:------------|")
