@@ -5,37 +5,40 @@ Repositorio con todas las prácticas de la asignatura.
 ---
 ## 📂 Índice de Prácticas
 
-* **[Práctica 20: Feature Engineering](./practica_20-Feature-Engineering/)**
-    * *Objetivo: central fue dominar el Feature Engineering (Ingeniería de Características) en Pandas a través de la metodología split-apply-combine para crear valor predictivo y de negocio en el set de datos.*
+* **[Práctica 21: Pyspark Basico](./practica_21-pySpark_basico/)**
+    * *Objetivo: Ejercicio 1.*
 
-* **[Práctica 19: Análisis de KPIs con Pandas](./practica_19-kpis-pandas/)**
-    * *Objetivo: Calcular métricas de negocio clave (KPIs) como Tasa de Conversión, ARPU, CAC, ROI y Retención utilizando Pandas.*
+* **[Práctica 20: Feature Engineering](./practica_20-Feature_Engineering/)**
+    * *Objetivo: 1. Calcular el salario anual*
 
-* **[Práctica 18: Data Cleaning y Manipulación con Pandas](./practica_18-data-cleaning-pandas/)**
-    * *Objetivo: Realizar limpieza de datos (Data Cleaning) y Análisis Exploratorio (EDA) usando Pandas: manejo de duplicados, valores nulos, conversión de tipos y filtrado.*
+* **[Práctica 19: Pandas Kpis](./practica_19-Pandas KPIs/)**
+    * *Objetivo: Paso 2.1 Efectuar preprocesamiento y limpieza de datos*
 
-* **[Práctica 17: Herencia y Tipos de Métodos (OOP Avanzado)](./practica_17-Herencia/)**
-    * *Objetivo: Profundizar en OOP mediante Herencia, Polimorfismo (`super()`) y tipos de métodos (`@staticmethod`, `@classmethod`).*
+* **[Práctica 18: Data Cleaning Pandas](./practica_18-data-cleaning-pandas/)**
+    * *Objetivo: Dominar la librería Pandas para transformar datasets "sucios" en datos listos para análisis, cubriendo desde la selección básica hasta el manejo avanzado de índices y outliers.*
 
-* **[Práctica 16: Programación Orientada a Objetos (OOP)](./practica_16-OOP/)**
-    * *Objetivo: Dominar Clases, Objetos, `__init__`, `@classmethod` y atributos.*
+* **[Práctica 17: Herencia](./practica_17-Herencia/)**
+    * *Objetivo: Distinguir y aplicar Métodos de Instancia (`self`), Métodos de Clase (`@classmethod`) y Métodos Estáticos (`@staticmethod`).*
 
-* **[Práctica 15: Comprehensions y Lambda](./practica_15-Comprehensions/)**
-    * *Objetivo: Dominar list/set/dict comprehensions y el uso de `lambda` para ordenamiento.*
+* **[Práctica 16: Oop](./practica_16-OOP/)**
+    * *Objetivo: Dominar los pilares de la OOP: clases, objetos, atributos (de instancia y de clase), métodos (`@classmethod`), el constructor `__init__`, la encapsulación (`__privado`) y la interacción entre clases.*
 
-* **Práctica 14: Distribución y Casos Prácticos**
-    * **[Parte 1: Creación de Paquetes](./practica_14-distribucion-paquetes/)**
-        * *Objetivo: Aprender a estructurar, empaquetar y distribuir 6 paquetes de Python con `setuptools`.*
-    * **[Parte 2: Casos Data Science (Numpy/Pandas/ML)](./practica_14-casos_data_science/)**
-        * *Objetivo: Ejecutar notebooks de análisis de datos con Numpy, Pandas y ML.*
+* **[Práctica 15: Comprehensions](./practica_15-Comprehensions/)**
+    * *Objetivo: Este directorio contiene los ejercicios de la Práctica 15, divididos en dos partes principales:*
 
-* **[Práctica 13: Programación Modular](./practica_13-programacion-modular/)**
-    * *Objetivo: Estructurar un proyecto Python en paquetes y módulos (ej. la carpeta `app/`).*
+* **[Práctica 14: Distribucion Paquetes](./practica_14-distribucion-paquetes/)**
+    * *Objetivo: Esta carpeta contiene todos los ejercicios y casos prácticos relacionados con la lección sobre distribución de paquetes en Python.*
 
-* **[Práctica 12: Tipos de Argumentos](./practica_12-tipos_de_argumentos/)**
-    * *Objetivo: Repasar `*args`, `**kwargs` y argumentos posicionales/nombrados en notebooks.*
+* **[Práctica 14: Casos Data Science](./practica_14-casos_data_science/)**
+    * *Objetivo: Esta carpeta contiene la segunda parte de la Práctica 14, que consiste en notebooks de Jupyter para ejecutar y entender librerías fundamentales de Data Science.*
+
+* **[Práctica 13: Programacion Modular](./practica_13-programacion-modular/)**
+    * *Objetivo: Este directorio es un "laboratorio" que contiene las soluciones a múltiples ejercicios propuestos sobre modularidad, paquetes y refactorización de código.*
+
+* **[Práctica 12: Tipos De Argumentos](./practica_12-tipos_de_argumentos/)**
+    * *Objetivo: Escribe una función llamada calcular_area_rectangulo que reciba dos argumentos posicionales: base y altura, y retorne el área del rectángulo.*
 
 ## 📂 Índice de Proyectos Personales
 
-* **[Ejercicios Personales: LeetCode (DS&A)](./ejercicios_personales-leetcode/)**
-    * *Objetivo: Colección de desafíos de programación para dominar Estructuras de Datos y Algoritmos.*
+* **[Ejercicios Personales: Leetcode](./ejercicios_personales-leetcode/)**
+    * *Objetivo: El objetivo de este proyecto es doble: mejorar la capacidad de escribir código eficiente (eficiencia O(n)) y dominar las estructuras de datos y algoritmos fundamentales de Python (DS&A).*
