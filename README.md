@@ -12,7 +12,7 @@
 
 ## 📋 Tabla de Contenidos
 
-- [🛠️ Tecnologías Utilizadas](#️-tecnologías-utilizadas)
+- [🛠️ Tecnologías Utilizadas](#-tecnologías-utilizadas)
 - [🔥 Prácticas de Big Data y Analytics](#-prácticas-de-big-data-y-analytics)
 - [🐍 Prácticas de Python Avanzado](#-prácticas-de-python-avanzado)
 - [📦 Prácticas de Modularidad y Distribución](#-prácticas-de-modularidad-y-distribución)
@@ -26,11 +26,11 @@
 | Tecnología | Uso |
 |:-----------|:----|
 | 🐍 Python 3.11 | Lenguaje principal |
-| 📊 Matplotlib | Visualización de datos |
 | ⚡ PySpark | Procesamiento distribuido |
-| 📈 Seaborn | Visualización estadística |
-| 🐼 Pandas | Análisis y manipulación de datos |
 | 🔢 NumPy | Computación numérica |
+| 📈 Seaborn | Visualización estadística |
+| 📊 Matplotlib | Visualización de datos |
+| 🐼 Pandas | Análisis y manipulación de datos |
 | 📓 Jupyter | Notebooks interactivos |
 
 ## 🔥 Prácticas de Big Data y Analytics
@@ -54,8 +54,8 @@
 
 | Práctica | Tema | Descripción |
 |:--------:|:-----|:------------|
-| [**14.2**](./practica_14-distribucion-paquetes/) | Parte 2: Distribución de Paquetes | Esta carpeta contiene todos los ejercicios y casos prácticos relacionados con la lección sobre distribución de paquetes en Python. |
 | [**14.1**](./practica_14-casos_data_science/) | Parte 1: Casos de Data Science | Esta carpeta contiene la segunda parte de la Práctica 14, que consiste en notebooks de Jupyter para ejecutar y entender librerías fundamentales de Data Science. |
+| [**14.2**](./practica_14-distribucion-paquetes/) | Parte 2: Distribución de Paquetes | Esta carpeta contiene todos los ejercicios y casos prácticos relacionados con la lección sobre distribución de paquetes en Python. |
 | [**13**](./practica_13-programacion-modular/) | Programación Modular | Este directorio es un "laboratorio" que contiene las soluciones a múltiples ejercicios propuestos sobre modularidad, paquetes y refactorización de código. |
 | [**12**](./practica_12-tipos_de_argumentos/) | Tipos de Argumentos | Este documento cubre los diferentes tipos de argumentos en las funciones de Python (posicionales, keywords, `*args`, `**kwargs`, valores por defecto) y el concepto de alcance de variables (global). |
 
