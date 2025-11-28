@@ -10,6 +10,7 @@ import json
 import os
 import re
 from pathlib import Path
+from urllib.parse import quote
 
 
 # Mapeo de imports a temas
@@ -73,6 +74,67 @@ SENTENCE_BOUNDARY_THRESHOLD = 0.6
 TARGET_LINE_LENGTH = 80
 MULTILINE_INDENT = "      "
 
+# Categorías de prácticas
+CATEGORIES = {
+    "bigdata": {
+        "title": "🔥 Prácticas de Big Data y Analytics",
+        "anchor": "-prácticas-de-big-data-y-analytics",
+        "range": (18, 21),
+    },
+    "python_advanced": {
+        "title": "🐍 Prácticas de Python Avanzado",
+        "anchor": "-prácticas-de-python-avanzado",
+        "range": (15, 17),
+    },
+    "modularidad": {
+        "title": "📦 Prácticas de Modularidad y Distribución",
+        "anchor": "-prácticas-de-modularidad-y-distribución",
+        "range": (12, 14),
+    },
+}
+
+# Métodos y funciones comunes para formatear con backticks
+METHODS_TO_FORMAT = [
+    # Pandas methods
+    r'\bgroupby\(\)',
+    r'\bmerge\(\)',
+    r'\bconcat\(\)',
+    r'\bpivot\(\)',
+    r'\bpivot_table\(\)',
+    r'\bmelt\(\)',
+    r'\brolling\(\)',
+    r'\bresample\(\)',
+    r'\bfillna\(\)',
+    r'\bdropna\(\)',
+    r'\bastype\(\)',
+    r'\bapply\(\)',
+    r'\bmap\(\)',
+    r'\bloc\b',
+    r'\biloc\b',
+    # PySpark methods
+    r'\bselect\(\)',
+    r'\bfilter\(\)',
+    r'\bwithColumn\(\)',
+    r'\bjoin\(\)',
+    r'\bagg\(\)',
+    r'\bcollect\(\)',
+    r'\bshow\(\)',
+    r'\bprintSchema\(\)',
+    # Python OOP
+    r'\b__init__\b',
+    r'\b__str__\b',
+    r'\b__repr__\b',
+    r'\bsuper\(\)',
+    r'@classmethod\b',
+    r'@staticmethod\b',
+    r'@property\b',
+    # Data types
+    r'\bDataFrame\b',
+    r'\bDataFrames\b',
+    r'\bSeries\b',
+    r'\bRDD\b',
+]
+
 
 def extract_number_from_folder(folder_name: str) -> int:
     """Extrae el número de práctica de un nombre de carpeta."""
@@ -80,6 +142,36 @@ def extract_number_from_folder(folder_name: str) -> int:
     if match:
         return int(match.group(1))
     return 0
+
+
+def encode_folder_url(folder_name: str) -> str:
+    """Codifica el nombre de la carpeta para URLs (espacios → %20)."""
+    return quote(folder_name, safe='')
+
+
+def format_methods_with_backticks(text: str) -> str:
+    """
+    Formatea métodos y funciones con backticks en el texto.
+    
+    Busca patrones de métodos comunes y los envuelve en backticks.
+    Evita duplicar backticks si ya están presentes.
+    """
+    result = text
+    
+    # Primero, manejar casos especiales de *args y **kwargs
+    # Reemplazar *kwargs primero (más específico)
+    result = re.sub(r'(?<!`)\*\*kwargs(?!`)', r'`**kwargs`', result)
+    result = re.sub(r'(?<!`)\*args(?!`)', r'`*args`', result)
+    
+    for pattern in METHODS_TO_FORMAT:
+        # Usar lookahead/lookbehind para evitar backticks
+        safe_pattern = f'(?<!`)({pattern})(?!`)'
+        result = re.sub(safe_pattern, r'`\1`', result)
+    
+    # Limpiar backticks duplicados
+    result = re.sub(r'``+', '`', result)
+    
+    return result
 
 
 def format_folder_name(folder_name: str) -> str:
@@ -175,13 +267,24 @@ def read_readme_objective(readme_path: Path) -> str:
 
 def clean_description(text: str, max_length: int = MAX_DESCRIPTION_LENGTH) -> str:
     """Limpia y formatea una descripción."""
+    # Preservar *args y **kwargs antes de procesar markdown
+    # Usar marcadores temporales para protegerlos
+    text = re.sub(r'`\*\*kwargs`', '<<DOUBLE_STAR_KWARGS>>', text)
+    text = re.sub(r'`\*args`', '<<STAR_ARGS>>', text)
+    text = re.sub(r'\*\*kwargs', '<<DOUBLE_STAR_KWARGS>>', text)
+    text = re.sub(r'\*args', '<<STAR_ARGS>>', text)
+    
     # Eliminar markdown innecesario
+    text = re.sub(r"`([^`]+)`", r"\1", text)  # Código inline
     text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)  # Negritas
     text = re.sub(r"\*([^*]+)\*", r"\1", text)  # Itálicas
     text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)  # Enlaces
-    text = re.sub(r"`([^`]+)`", r"\1", text)  # Código inline
     text = re.sub(r"\s+", " ", text)  # Normalizar espacios
     text = text.strip()
+    
+    # Restaurar *args y **kwargs
+    text = text.replace('<<DOUBLE_STAR_KWARGS>>', '**kwargs')
+    text = text.replace('<<STAR_ARGS>>', '*args')
     
     # Limitar longitud
     if len(text) > max_length:
@@ -536,15 +639,16 @@ def analyze_folder(folder_path: Path) -> str:
     return generate_description_from_imports(all_imports, all_topics, folder_path.name)
 
 
-def scan_folders(base_path: Path) -> tuple[list, list]:
+def scan_folders(base_path: Path) -> tuple[list, list, list]:
     """
-    Escanea el directorio base y encuentra carpetas de prácticas y ejercicios.
+    Escanea el directorio base y encuentra carpetas de prácticas, ejercicios y cheatsheets.
     
     Returns:
-        Tuple de (prácticas, ejercicios_personales) ordenados
+        Tuple de (prácticas, ejercicios_personales, cheatsheets) ordenados
     """
     practicas = []
     ejercicios = []
+    cheatsheets = []
     
     for item in base_path.iterdir():
         if not item.is_dir():
@@ -555,6 +659,8 @@ def scan_folders(base_path: Path) -> tuple[list, list]:
             practicas.append(item)
         elif name.startswith("ejercicios_personales"):
             ejercicios.append(item)
+        elif name == "cheatsheets":
+            cheatsheets.append(item)
     
     # Ordenar prácticas por número (descendente)
     practicas.sort(key=lambda p: extract_number_from_folder(p.name), reverse=True)
@@ -562,7 +668,7 @@ def scan_folders(base_path: Path) -> tuple[list, list]:
     # Ordenar ejercicios alfabéticamente
     ejercicios.sort(key=lambda e: e.name)
     
-    return practicas, ejercicios
+    return practicas, ejercicios, cheatsheets
 
 
 def format_multiline_description(description: str, indent: str = MULTILINE_INDENT) -> str:
@@ -606,49 +712,205 @@ def format_multiline_description(description: str, indent: str = MULTILINE_INDEN
     return f"\n{indent}".join(lines)
 
 
-def generate_readme(base_path: Path, practicas: list, ejercicios: list) -> str:
+def get_practice_theme(folder_name: str) -> str:
     """
-    Genera el contenido del README.md principal.
+    Extrae el tema de una práctica del nombre de la carpeta.
     
-    Formato de cada entrada:
-    * **[Práctica XX: Nombre](./practica_XX-nombre/)**
-        * *Objetivo: Primera línea del resumen.
-          Segunda línea con más detalles.
-          Tercera línea opcional.*
+    Ejemplo: practica_21-pySpark_basico → PySpark Básico
+    """
+    match = re.match(r"practica_\d+-(.+)", folder_name)
+    if match:
+        name = match.group(1)
+        # Reemplazar separadores y capitalizar
+        name = name.replace("_", " ").replace("-", " ")
+        return name.title()
+    return ""
+
+
+def categorize_practices(practicas: list) -> dict:
+    """
+    Organiza las prácticas en categorías según su número.
+    
+    Returns:
+        Dict con categorías como claves y listas de prácticas como valores
+    """
+    categorized = {key: [] for key in CATEGORIES}
+    
+    for practica in practicas:
+        num = extract_number_from_folder(practica.name)
+        for cat_key, cat_info in CATEGORIES.items():
+            range_start, range_end = cat_info["range"]
+            if range_start <= num <= range_end:
+                categorized[cat_key].append(practica)
+                break
+    
+    return categorized
+
+
+def get_cheatsheet_files(cheatsheets_path: Path) -> list:
+    """
+    Obtiene la lista de archivos markdown en la carpeta cheatsheets.
+    
+    Returns:
+        Lista de tuples (nombre_archivo, nombre_display)
+    """
+    files = []
+    if cheatsheets_path.exists():
+        for f in cheatsheets_path.glob("*.md"):
+            name = f.stem
+            display_name = name.replace("_", " ").title()
+            files.append((f.name, display_name))
+    return sorted(files)
+
+
+def generate_table_of_contents(categorized: dict, has_cheatsheets: bool, has_ejercicios: bool) -> list:
+    """
+    Genera la tabla de contenidos con enlaces internos.
     """
     lines = [
-        "# Prácticas del Módulo Big Data (Curso 2025)",
-        "",
-        "Repositorio con todas las prácticas de la asignatura.",
-        "",
-        "---",
-        "## 📂 Índice de Prácticas",
+        "## 📋 Tabla de Contenidos",
         "",
     ]
     
-    for practica in practicas:
+    # Añadir enlaces a categorías
+    for cat_key in ["bigdata", "python_advanced", "modularidad"]:
+        if categorized.get(cat_key):
+            cat_info = CATEGORIES[cat_key]
+            lines.append(f"- [{cat_info['title']}](#{cat_info['anchor']})")
+    
+    if has_cheatsheets:
+        lines.append("- [📚 Material de Referencia](#-material-de-referencia)")
+    
+    if has_ejercicios:
+        lines.append("- [🏆 Proyectos Personales](#-proyectos-personales)")
+    
+    lines.append("")
+    return lines
+
+
+def generate_category_table(practicas: list, base_path: Path) -> list:
+    """
+    Genera una tabla markdown para una lista de prácticas.
+    
+    Formato:
+    | Práctica | Tema | Descripción |
+    |:--------:|:-----|:------------|
+    | [**21**](./practica_21/) | PySpark Básico | Descripción... |
+    """
+    lines = [
+        "| Práctica | Tema | Descripción |",
+        "|:--------:|:-----|:------------|",
+    ]
+    
+    # Ordenar por número descendente
+    sorted_practicas = sorted(
+        practicas, 
+        key=lambda p: extract_number_from_folder(p.name), 
+        reverse=True
+    )
+    
+    for practica in sorted_practicas:
         folder_name = practica.name
-        display_name = format_folder_name(folder_name)
-        description = analyze_folder(practica)
-        formatted_desc = format_multiline_description(description)
+        encoded_url = encode_folder_url(folder_name)
+        num = extract_number_from_folder(folder_name)
+        theme = get_practice_theme(folder_name)
         
-        lines.append(f"* **[{display_name}](./{folder_name}/)**")
-        lines.append(f"    * *Objetivo: {formatted_desc}*")
+        description = analyze_folder(practica)
+        # Formatear métodos con backticks
+        description = format_methods_with_backticks(description)
+        # Limpiar descripción para tabla (eliminar saltos de línea)
+        description = description.replace("\n", " ").strip()
+        
+        lines.append(f"| [**{num}**](./{encoded_url}/) | {theme} | {description} |")
+    
+    lines.append("")
+    return lines
+
+
+def generate_readme(base_path: Path, practicas: list, ejercicios: list, cheatsheets: list) -> str:
+    """
+    Genera el contenido del README.md principal con formato profesional.
+    
+    Incluye:
+    - Header con título y descripción
+    - Tabla de contenidos con navegación
+    - Secciones categorizadas con tablas markdown
+    - Métodos formateados con backticks
+    - URLs correctamente codificadas
+    """
+    lines = [
+        "# 🎓 Prácticas del Módulo Big Data (Curso 2025)",
+        "",
+        "> Repositorio con todas las prácticas de la asignatura de Big Data.",
+        "",
+        "---",
+        "",
+    ]
+    
+    # Categorizar prácticas
+    categorized = categorize_practices(practicas)
+    
+    has_cheatsheets = bool(cheatsheets)
+    has_ejercicios = bool(ejercicios)
+    
+    # Tabla de contenidos
+    lines.extend(generate_table_of_contents(categorized, has_cheatsheets, has_ejercicios))
+    lines.append("---")
+    lines.append("")
+    
+    # Sección de Big Data y Analytics (18-21)
+    if categorized["bigdata"]:
+        lines.append(f"## {CATEGORIES['bigdata']['title']}")
+        lines.append("")
+        lines.extend(generate_category_table(categorized["bigdata"], base_path))
+    
+    # Sección de Python Avanzado (15-17)
+    if categorized["python_advanced"]:
+        lines.append(f"## {CATEGORIES['python_advanced']['title']}")
+        lines.append("")
+        lines.extend(generate_category_table(categorized["python_advanced"], base_path))
+    
+    # Sección de Modularidad y Distribución (12-14)
+    if categorized["modularidad"]:
+        lines.append(f"## {CATEGORIES['modularidad']['title']}")
+        lines.append("")
+        lines.extend(generate_category_table(categorized["modularidad"], base_path))
+    
+    # Sección de Material de Referencia (cheatsheets)
+    if cheatsheets:
+        lines.append("## 📚 Material de Referencia")
+        lines.append("")
+        lines.append("| Recurso | Descripción |")
+        lines.append("|:--------|:------------|")
+        
+        cheatsheet_path = cheatsheets[0]  # Solo hay una carpeta cheatsheets
+        cheatsheet_files = get_cheatsheet_files(cheatsheet_path)
+        
+        for filename, display_name in cheatsheet_files:
+            encoded_path = f"./cheatsheets/{quote(filename, safe='')}"
+            lines.append(f"| [**{display_name}**]({encoded_path}) | Guía de referencia rápida |")
+        
         lines.append("")
     
+    # Sección de Proyectos Personales
     if ejercicios:
-        lines.append("## 📂 Índice de Proyectos Personales")
+        lines.append("## 🏆 Proyectos Personales")
         lines.append("")
+        lines.append("| Proyecto | Descripción |")
+        lines.append("|:---------|:------------|")
         
         for ejercicio in ejercicios:
             folder_name = ejercicio.name
+            encoded_url = encode_folder_url(folder_name)
             display_name = format_folder_name(folder_name)
-            description = analyze_folder(ejercicio)
-            formatted_desc = format_multiline_description(description)
             
-            lines.append(f"* **[{display_name}](./{folder_name}/)**")
-            lines.append(f"    * *Objetivo: {formatted_desc}*")
-            lines.append("")
+            description = analyze_folder(ejercicio)
+            description = format_methods_with_backticks(description)
+            description = description.replace("\n", " ").strip()
+            
+            lines.append(f"| [**{display_name}**](./{encoded_url}/) | {description} |")
+        
+        lines.append("")
     
     return "\n".join(lines)
 
@@ -662,12 +924,12 @@ def main():
     print(f"Escaneando repositorio en: {base_path}")
     
     # Escanear carpetas
-    practicas, ejercicios = scan_folders(base_path)
+    practicas, ejercicios, cheatsheets = scan_folders(base_path)
     
-    print(f"Encontradas {len(practicas)} prácticas y {len(ejercicios)} proyectos personales")
+    print(f"Encontradas {len(practicas)} prácticas, {len(ejercicios)} proyectos personales y {len(cheatsheets)} carpetas de referencia")
     
     # Generar README
-    readme_content = generate_readme(base_path, practicas, ejercicios)
+    readme_content = generate_readme(base_path, practicas, ejercicios, cheatsheets)
     
     # Escribir README
     readme_path = base_path / "README.md"
