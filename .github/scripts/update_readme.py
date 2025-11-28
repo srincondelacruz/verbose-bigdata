@@ -1173,8 +1173,9 @@ def generate_readme(base_path: Path, practicas: list, ejercicios: list, cheatshe
 def main():
     """Punto de entrada principal del script."""
     # Determinar la ruta base del repositorio
+    # El script está en .github/scripts/, así que subimos 3 niveles
     script_path = Path(__file__).resolve()
-    base_path = script_path.parent.parent
+    base_path = script_path.parent.parent.parent
     
     print(f"Escaneando repositorio en: {base_path}")
     

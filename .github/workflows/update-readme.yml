@@ -21,7 +21,7 @@ jobs:
           python-version: '3.11'
 
       - name: Update README
-        run: python scripts/update_readme.py
+        run: python .github/scripts/update_readme.py
 
       - name: Check for changes
         id: git-check
