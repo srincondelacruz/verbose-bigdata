@@ -9,7 +9,7 @@
 - [🔥 Prácticas de Big Data y Analytics](#-prácticas-de-big-data-y-analytics)
 - [🐍 Prácticas de Python Avanzado](#-prácticas-de-python-avanzado)
 - [📦 Prácticas de Modularidad y Distribución](#-prácticas-de-modularidad-y-distribución)
-- [📚 Material de Referencia](#-material-de-referencia)
+- [📚 Cheatsheets](#-cheatsheets)
 - [🏆 Proyectos Personales](#-proyectos-personales)
 
 ---
@@ -40,7 +40,7 @@
 | [**13**](./practica_13-programacion-modular/) | Programacion Modular | Este directorio es un "laboratorio" que contiene las soluciones a múltiples ejercicios propuestos sobre modularidad, paquetes y refactorización de código. |
 | [**12**](./practica_12-tipos_de_argumentos/) | Tipos De Argumentos | Este documento cubre los diferentes tipos de argumentos en las funciones de Python (posicionales, keywords, `*args`, `**kwargs`, valores por defecto) y el concepto de alcance de variables (global). |
 
-## 📚 Material de Referencia
+## 📚 Cheatsheets
 
 | Recurso | Descripción |
 |:--------|:------------|
