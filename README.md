@@ -27,9 +27,9 @@
 |:-----------|:----|
 | 🐍 Python 3.11 | Lenguaje principal |
 | 📊 Matplotlib | Visualización de datos |
-| 📈 Seaborn | Visualización estadística |
 | ⚡ PySpark | Procesamiento distribuido |
 | 🔢 NumPy | Computación numérica |
+| 📈 Seaborn | Visualización estadística |
 | 🐼 Pandas | Análisis y manipulación de datos |
 | 📓 Jupyter | Notebooks interactivos |
 
@@ -37,6 +37,7 @@
 
 | Práctica | Tema | Descripción |
 |:--------:|:-----|:------------|
+| [**22**](./practica_22-scala/) | Scala | Práctica sobre Scala. |
 | [**21**](./practica_21-pySpark_basico/) | PySpark Básico | Procesamiento de datos distribuidos con Apache Spark usando PySpark. Incluye operaciones de `DataFrames`, transformaciones y acciones. |
 | [**20**](./practica_20-Feature_Engineering/) | Feature Engineering | Manipulación y análisis de datos tabulares con Pandas y operaciones numéricas eficientes con NumPy. |
 | [**19**](./practica_19-Pandas%20KPIs/) | KPIs con Pandas | Calcular el porcentaje de usuarios registrados que se convirtieron de plan gratuito a plan de pago. Para los usuarios que compraron un plan de pago, calcular el tiempo promedio (en días) que transcurrió entre su registro y su primera compra. |

@@ -109,7 +109,7 @@ CATEGORIES = {
     "bigdata": {
         "title": "🔥 Prácticas de Big Data y Analytics",
         "anchor": "-prácticas-de-big-data-y-analytics",
-        "range": (18, 21),
+        "range": (18, 99),
     },
     "python_advanced": {
         "title": "🐍 Prácticas de Python Avanzado",
