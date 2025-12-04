@@ -20,4 +20,4 @@ sdist/
 .idea/
 .DS_Store
 *.log
-practica_18-data-cleaning-pandas/*.csv
+
