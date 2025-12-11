@@ -35,6 +35,7 @@ Se ejecutó el script `base_datos.sql` en SQL Server Management Studio para crea
 - **Tipo:** Storage Account con Hierarchical Namespace habilitado (Data Lake Gen2)
 - **Ubicación:** Spain Central
 
+
 #### 2.3 Container y Estructura
 ```
 deltalake/
@@ -43,7 +44,7 @@ deltalake/
         ├── productos/    (pendiente)
         └── ventas/       (pendiente)
 ```
-
+![Base de datos creada](./capturas/datafactory.png)
 > ⚠️ **Nota:** Guardar la Access Key del Storage Account para usarla después en Databricks.
 
 ---
@@ -54,7 +55,7 @@ deltalake/
 - **Tipo:** Data Factory (V2)
 - **Ubicación:** Spain Central
 - **Resource Group:** `pract27`
-
+![Base de datos creada](./capturas/dayalake.png)
 ---
 
 ### Paso 4: Integration Runtime (En Progreso)
@@ -67,7 +68,7 @@ Se inició la configuración del **Integration Runtime Self-Hosted** necesario p
 > 🔧 **Siguiente paso:** Descargar e instalar el Integration Runtime en el PC local para establecer la conexión entre SQL Server y Azure.
 
 ---
-
+![Base de datos creada](./capturas/runtime.png)
 ## 📁 Archivos del Proyecto
 
 | Archivo | Descripción |
@@ -84,18 +85,14 @@ Se inició la configuración del **Integration Runtime Self-Hosted** necesario p
 
 ## 🔜 Pasos Pendientes
 
-1. [ ] **Instalar Integration Runtime** en el PC local
-2. [ ] **Configurar Linked Services** en Data Factory:
-   - SQL Server (origen)
-   - Azure Data Lake Storage Gen2 (destino)
-3. [ ] **Crear Pipeline** en Data Factory para copiar las 3 tablas a formato Parquet
-4. [ ] **Ejecutar Pipeline** y verificar datos en Storage Account
-5. [ ] **Configurar Azure Databricks**:
+1. [ ] **Crear Pipeline** en Data Factory para copiar las 3 tablas a formato Parquet
+2. [ ] **Ejecutar Pipeline** y verificar datos en Storage Account
+3. [ ] **Configurar Azure Databricks**:
    - Crear workspace
    - Configurar scopes y secretos
    - Ejecutar notebooks para crear tablas Delta
-6. [ ] **Entrenar modelo ML** con Spark MLlib
-7. [ ] **Conectar Power BI** al Lakehouse para visualización
+4. [ ] **Entrenar modelo ML** con Spark MLlib
+5. [ ] **Conectar Power BI** al Lakehouse para visualización
 
 ---
 
