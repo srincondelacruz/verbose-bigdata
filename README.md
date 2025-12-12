@@ -6,7 +6,7 @@
 
 > 📚 Repositorio con todas las prácticas de la asignatura de Big Data.
 >
-> **Prácticas completadas:** 15/21
+> **Prácticas completadas:** 16/21
 
 ---
 
@@ -26,11 +26,11 @@
 | Tecnología | Uso |
 |:-----------|:----|
 | 🐍 Python 3.11 | Lenguaje principal |
-| 📊 Matplotlib | Visualización de datos |
-| 📈 Seaborn | Visualización estadística |
-| 🔢 NumPy | Computación numérica |
-| 🐼 Pandas | Análisis y manipulación de datos |
 | ⚡ PySpark | Procesamiento distribuido |
+| 📊 Matplotlib | Visualización de datos |
+| 🔢 NumPy | Computación numérica |
+| 📈 Seaborn | Visualización estadística |
+| 🐼 Pandas | Análisis y manipulación de datos |
 | 📓 Jupyter | Notebooks interactivos |
 
 ## 🔥 Prácticas de Big Data y Analytics
