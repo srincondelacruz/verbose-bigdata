@@ -6,7 +6,7 @@
 
 > 📚 Repositorio con todas las prácticas de la asignatura de Big Data.
 >
-> **Prácticas completadas:** 10/21
+> **Prácticas completadas:** 15/21
 
 ---
 
@@ -26,11 +26,11 @@
 | Tecnología | Uso |
 |:-----------|:----|
 | 🐍 Python 3.11 | Lenguaje principal |
-| 📈 Seaborn | Visualización estadística |
-| ⚡ PySpark | Procesamiento distribuido |
 | 📊 Matplotlib | Visualización de datos |
+| 📈 Seaborn | Visualización estadística |
 | 🔢 NumPy | Computación numérica |
 | 🐼 Pandas | Análisis y manipulación de datos |
+| ⚡ PySpark | Procesamiento distribuido |
 | 📓 Jupyter | Notebooks interactivos |
 
 ## 🔥 Prácticas de Big Data y Analytics
@@ -40,7 +40,6 @@
 | [**21**](./practica_21-pySpark_basico/) | PySpark Básico | Procesamiento de datos distribuidos con Apache Spark usando PySpark. Incluye operaciones de `DataFrames`, transformaciones y acciones. |
 | [**20**](./practica_20-Feature_Engineering/) | Feature Engineering | Manipulación y análisis de datos tabulares con Pandas y operaciones numéricas eficientes con NumPy. |
 | [**19**](./practica_19-Pandas%20KPIs/) | KPIs con Pandas | Calcular el porcentaje de usuarios registrados que se convirtieron de plan gratuito a plan de pago. Para los usuarios que compraron un plan de pago, calcular el tiempo promedio (en días) que transcurrió entre su registro y su primera compra. |
-| [**18**](./practica_18-data-cleaning-pandas/) | Data Cleaning con Pandas | Dominar la librería Pandas para transformar datasets "sucios" en datos listos para análisis, cubriendo desde la selección básica hasta el manejo avanzado de índices y outliers. |
 
 ## 🐍 Prácticas de Python Avanzado
 
