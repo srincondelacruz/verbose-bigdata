@@ -64,18 +64,18 @@
 
 | Práctica | Tema | Descripción |
 |:--------:|:-----|:------------|
-| [**17**](./practica_17-Herencia/) | Herencia | Distinguir y aplicar Métodos de Instancia (self), Métodos de Clase (`@classmethod`) y Métodos Estáticos (`@staticmethod`). Implementar Herencia Simple para crear jerarquías de clases lógicas. Utilizar `super()` para extender la funcionalidad de las clases padre. |
-| [**16**](./practica_16-OOP/) | OOP | Dominar los pilares de la OOP: clases, objetos, atributos (de instancia y de clase), métodos (`@classmethod`), el constructor `__init__`, la encapsulación (__privado) y la interacción entre clases. |
-| [**15**](./practica_15-Comprehensions/) | Comprehensions | Este directorio contiene los ejercicios de la Práctica 15, divididos en dos partes principales. |
+| [**17**](./practica_17-Herencia/) | Herencia | Métodos de Instancia, Clase y Estáticos. Herencia Simple y uso de `super()`. |
+| [**16**](./practica_16-OOP/) | OOP | Pilares de la OOP: clases, objetos, atributos, métodos, encapsulación. |
+| [**15**](./practica_15-Comprehensions/) | Comprehensions | Ejercicios de list, dict y set comprehensions. |
 
 ## 📦 Prácticas de Modularidad y Distribución
 
 | Práctica | Tema | Descripción |
 |:--------:|:-----|:------------|
-| [**14.1**](./practica_14-casos_data_science/) | Parte 1: Casos de Data Science | Esta carpeta contiene la segunda parte de la Práctica 14, que consiste en notebooks de Jupyter para ejecutar y entender librerías fundamentales de Data Science. |
-| [**14.2**](./practica_14-distribucion-paquetes/) | Parte 2: Distribución de Paquetes | Esta carpeta contiene todos los ejercicios y casos prácticos relacionados con la lección sobre distribución de paquetes en Python. |
-| [**13**](./practica_13-programacion-modular/) | Programación Modular | Este directorio es un "laboratorio" que contiene las soluciones a múltiples ejercicios propuestos sobre modularidad, paquetes y refactorización de código. |
-| [**12**](./practica_12-tipos_de_argumentos/) | Tipos de Argumentos | Este documento cubre los diferentes tipos de argumentos en las funciones de Python (posicionales, keywords, `*args`, `**kwargs`, valores por defecto) y el concepto de alcance de variables (global). |
+| [**14.1**](./practica_14-casos_data_science/) | Casos de Data Science | Notebooks de Jupyter con librerías fundamentales de Data Science. |
+| [**14.2**](./practica_14-distribucion-paquetes/) | Distribución de Paquetes | Ejercicios sobre distribución de paquetes en Python. |
+| [**13**](./practica_13-programacion-modular/) | Programación Modular | Ejercicios sobre modularidad, paquetes y refactorización. |
+| [**12**](./practica_12-tipos_de_argumentos/) | Tipos de Argumentos | Argumentos posicionales, keywords, `*args`, `**kwargs` y scope. |
 
 ## 📚 Cheatsheets
 
@@ -88,4 +88,4 @@
 
 | Proyecto | Descripción |
 |:---------|:------------|
-| [**Ejercicios Personales: Leetcode**](./ejercicios_personales-leetcode/) | El objetivo de este proyecto es doble: mejorar la capacidad de escribir código eficiente (eficiencia O(n)) y dominar las estructuras de datos y algoritmos fundamentales de Python (DS&A). |
+| [**Ejercicios Personales: Leetcode**](./ejercicios_personales-leetcode/) | Ejercicios para mejorar eficiencia O(n) y dominar DS&A en Python. |
