@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: walmart_source
+    description: "Fuente de datos raw de ventas Walmart"
+    database: ventas_db
+    schema: public
+    tables:
+      - name: raw_ventas
+        description: "Datos crudos cargados desde Python"
+        columns:
+          - name: '"Store"'
+          - name: '"Date"'
+          - name: '"Weekly_Sales"'
+          - name: '"Holiday_Flag"'
+          - name: '"Temperature"'
+          - name: '"Fuel_Price"'
+          - name: '"CPI"'
+          - name: '"Unemployment"'

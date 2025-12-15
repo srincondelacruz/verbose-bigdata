@@ -1,0 +1,12 @@
+dbt_project: 
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      user: admin
+      password: admin
+      port: 5434       
+      dbname: ventas_db
+      schema: dbt_oscar
+      threads: 1

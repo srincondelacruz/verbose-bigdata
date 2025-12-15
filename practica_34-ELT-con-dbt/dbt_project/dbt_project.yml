@@ -1,0 +1,38 @@
+# Name your project!
+name: 'dbt_project'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'dbt_project'
+
+# These configurations specify where dbt should look for different types of files.
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# --- CONFIGURACIÓN DE MODELOS---
+models:
+  dbt_project: 
+    
+    # 1. Capa Staging: Vistas ligeras (limpieza)
+    staging:
+      +materialized: view
+      +schema: staging      # Creará un esquema 'dbt_tu_nombre_staging' en Postgres
+
+    # 2. Capa Intermediate: Vistas con lógica (agregaciones)
+    intermediate:
+      +materialized: view
+      +schema: intermediate # Creará un esquema 'dbt_tu_nombre_intermediate'
+
+    # 3. Capa Marts: Tablas físicas 
+    marts:
+      +materialized: table  # Guarda los datos físicamente para que sea rápido leerlos
+      +schema: marts        # Creará un esquema 'dbt_tu_nombre_marts'
