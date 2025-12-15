@@ -1,18 +1,20 @@
 # 🎓 Prácticas del Módulo Big Data (Curso 2025)
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-orange)
+![Azure](https://img.shields.io/badge/Azure-Cloud-0089D6)
+![Databricks](https://img.shields.io/badge/Databricks-Spark-FF3621)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 > 📚 Repositorio con todas las prácticas de la asignatura de Big Data.
 >
-> **Prácticas completadas:** 20/21
+> **Prácticas completadas:** 28
 
 ---
 
 ## 📋 Tabla de Contenidos
 
 - [🛠️ Tecnologías Utilizadas](#-tecnologías-utilizadas)
+- [☁️ Prácticas de Cloud y Azure](#-prácticas-de-cloud-y-azure)
 - [🔥 Prácticas de Big Data y Analytics](#-prácticas-de-big-data-y-analytics)
 - [🐍 Prácticas de Python Avanzado](#-prácticas-de-python-avanzado)
 - [📦 Prácticas de Modularidad y Distribución](#-prácticas-de-modularidad-y-distribución)
@@ -26,20 +28,37 @@
 | Tecnología | Uso |
 |:-----------|:----|
 | 🐍 Python 3.11 | Lenguaje principal |
-| 📊 Matplotlib | Visualización de datos |
-| 🐼 Pandas | Análisis y manipulación de datos |
-| ⚡ PySpark | Procesamiento distribuido |
-| 📈 Seaborn | Visualización estadística |
+| ☁️ Azure | Plataforma Cloud |
+| ⚡ Databricks | Procesamiento Spark |
+| 🐼 Pandas | Análisis de datos |
+| 📊 Power BI | Visualización |
+| 🐳 Docker | Contenedores |
 | 🔢 NumPy | Computación numérica |
-| 📓 Jupyter | Notebooks interactivos |
+
+## ☁️ Prácticas de Cloud y Azure
+
+| Práctica | Tema | Descripción |
+|:--------:|:-----|:------------|
+| [**41**](./practica_41-End-to-End-DE/) | End-to-End Data Engineering | Proyecto completo: migración SQL Server a Azure con arquitectura medallion (Bronze → Silver → Gold) y Power BI. |
+| [**35**](./practica_35-Data_Warehouse_Azure/) | Data Warehouse Azure | Implementación de Data Warehouse en Azure con mejores prácticas. |
+| [**34**](./practica_34-ELT-con-dbt/) | ELT con dbt | Pipeline ELT con dbt, PostgreSQL y Docker para análisis de ventas Walmart. |
+| [**32**](./practica_32-Batch-Streaming-Azure-Databricks-PowerBI/) | Batch & Streaming | Pipeline end-to-end con Azure Event Hubs, Databricks, Data Lake y Power BI. |
+| [**29**](./practica_29-MongoDB-AzureAIFoundry/) | MongoDB + Azure AI Foundry | Integración de MongoDB con Azure AI Foundry para aplicaciones inteligentes. |
+| [**28**](./practica_28-BD_vectorial_FE/) | BD Vectorial + Feature Engineering | Base de datos vectorial con PostgreSQL y Feature Engineering en Azure. |
+| [**27**](./practica_27-De_SQL_Server_local_a_Lakehouse,_Power_BI_y_ML/) | SQL Server a Lakehouse | Migración de SQL Server local a Azure Lakehouse con Power BI y ML. |
 
 ## 🔥 Prácticas de Big Data y Analytics
 
 | Práctica | Tema | Descripción |
 |:--------:|:-----|:------------|
-| [**21**](./practica_21-pySpark_basico/) | PySpark Básico | Procesamiento de datos distribuidos con Apache Spark usando PySpark. Incluye operaciones de `DataFrames`, transformaciones y acciones. |
-| [**20**](./practica_20-Feature_Engineering/) | Feature Engineering | Manipulación y análisis de datos tabulares con Pandas y operaciones numéricas eficientes con NumPy. |
-| [**19**](./practica_19-Pandas%20KPIs/) | KPIs con Pandas | Calcular el porcentaje de usuarios registrados que se convirtieron de plan gratuito a plan de pago. Para los usuarios que compraron un plan de pago, calcular el tiempo promedio (en días) que transcurrió entre su registro y su primera compra. |
+| [**26**](./practica_26-hadoop/) | Hadoop | Ecosistema Hadoop: HDFS, MapReduce y procesamiento distribuido. |
+| [**25**](./practica_25-formatos_bigdata/) | Formatos Big Data | Formatos de almacenamiento: Parquet, Avro, ORC y optimización. |
+| [**24**](./practica_24-numpy/) | NumPy Avanzado | Computación numérica avanzada con NumPy. |
+| [**23**](./practica_23-docker/) | Docker | Contenedorización de aplicaciones de datos. |
+| [**22**](./practica_22-scala/) | Scala | Introducción a Scala para procesamiento de datos con Spark. |
+| [**21**](./practica_21-pySpark_basico/) | PySpark Básico | Procesamiento de datos distribuidos con Apache Spark usando PySpark. |
+| [**20**](./practica_20-Feature_Engineering/) | Feature Engineering | Manipulación y análisis de datos tabulares con Pandas y NumPy. |
+| [**19**](./practica_19-Pandas%20KPIs/) | KPIs con Pandas | Cálculo de KPIs: conversión de usuarios y tiempo promedio de compra. |
 
 ## 🐍 Prácticas de Python Avanzado
 
