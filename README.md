@@ -26,11 +26,11 @@
 | Tecnología | Uso |
 |:-----------|:----|
 | 🐍 Python 3.11 | Lenguaje principal |
-| ⚡ PySpark | Procesamiento distribuido |
-| 🔢 NumPy | Computación numérica |
 | 📈 Seaborn | Visualización estadística |
 | 🐼 Pandas | Análisis y manipulación de datos |
+| ⚡ PySpark | Procesamiento distribuido |
 | 📊 Matplotlib | Visualización de datos |
+| 🔢 NumPy | Computación numérica |
 | 📓 Jupyter | Notebooks interactivos |
 
 ## 🔥 Prácticas de Big Data y Analytics
