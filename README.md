@@ -27,10 +27,10 @@
 |:-----------|:----|
 | 🐍 Python 3.11 | Lenguaje principal |
 | ⚡ PySpark | Procesamiento distribuido |
-| 📈 Seaborn | Visualización estadística |
-| 📊 Matplotlib | Visualización de datos |
-| 🔢 NumPy | Computación numérica |
 | 🐼 Pandas | Análisis y manipulación de datos |
+| 📈 Seaborn | Visualización estadística |
+| 🔢 NumPy | Computación numérica |
+| 📊 Matplotlib | Visualización de datos |
 | 📓 Jupyter | Notebooks interactivos |
 
 ## 🔥 Prácticas de Big Data y Analytics
